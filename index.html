@@ -1,15 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Better Programming Interface Design</title>
+    <title>
+      Better Programming Interface Design | SCORE Framework & Best Practices
+    </title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Learn how to design better programming interfaces using the SCORE framework. Includes practical examples, common anti-patterns, and best practices for API and interface design."
+    />
+    <meta
+      name="keywords"
+      content="interface design, API design, programming interfaces, SCORE framework, software architecture, best practices, design patterns, anti-patterns"
+    />
+    <meta name="author" content="Programming Interface Design Guide" />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://tslateman.github.io/interface-design/"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://tslateman.github.io/interface-design/"
+    />
+    <meta property="og:title" content="Better Programming Interface Design" />
+    <meta
+      property="og:description"
+      content="A practical guide to building interfaces that don't suck. Learn the SCORE framework and best practices for API design."
+    />
+    <meta
+      property="og:image"
+      content="https://tslateman.github.io/interface-design/og-image.png"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://tslateman.github.io/interface-design/"
+    />
+    <meta
+      property="twitter:title"
+      content="Better Programming Interface Design"
+    />
+    <meta
+      property="twitter:description"
+      content="A practical guide to building interfaces that don't suck. Learn the SCORE framework and best practices for API design."
+    />
+    <meta
+      property="twitter:image"
+      content="https://tslateman.github.io/interface-design/og-image.png"
+    />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Better Programming Interface Design",
+        "description": "Learn how to design better programming interfaces using the SCORE framework. Includes practical examples, common anti-patterns, and best practices.",
+        "author": {
+          "@type": "Organization",
+          "name": "Interface Design Guide"
+        },
+        "datePublished": "2025-01-01",
+        "dateModified": "2025-01-23",
+        "keywords": [
+          "interface design",
+          "API design",
+          "SCORE framework",
+          "software architecture"
+        ],
+        "articleSection": "Software Development",
+        "inLanguage": "en-US",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://tslateman.github.io/interface-design/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Interface Design Guide",
+          "url": "https://tslateman.github.io/interface-design/"
+        }
+      }
+    </script>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Prism.js for syntax highlighting -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -42,28 +138,41 @@
       .collapsible-content {
         max-height: 2000px; /* Increased height to prevent content cutoff */
         overflow: hidden;
-        transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+        transition:
+          max-height 0.5s ease-out,
+          opacity 0.5s ease-out;
         opacity: 1;
       }
       .collapsible-content.collapsed {
         max-height: 0;
         opacity: 0;
-        transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+        transition:
+          max-height 0.3s ease-in,
+          opacity 0.3s ease-in;
       }
       .toggle-icon {
-        font-size: 2.5rem; /* Larger size for + / - icons for main headers */
-        font-weight: bold;
-        margin-right: 1rem; /* Space between icon and header text */
-        width: 1em; /* Fixed width to prevent text reflow */
-        text-align: center;
-        line-height: 1; /* Align vertically */
-        color: #0056b3; /* Match header color */
+        width: 24px;
+        height: 24px;
+        margin-right: 1rem;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+      }
+      .toggle-icon.rotated {
+        transform: rotate(90deg);
       }
       /* Style for sub-collapsible icons */
       .toggle-icon.sub-icon {
-        font-size: 1.5rem; /* Smaller size for + / - icons for subheaders */
+        width: 20px;
+        height: 20px;
         margin-right: 0.75rem;
-        color: #1d4ed8; /* Match sub-header color */
+      }
+      /* Override Prism styles for better integration */
+      pre[class*="language-"] {
+        margin: 0;
+        border-radius: 0.5rem;
+      }
+      code[class*="language-"] {
+        font-size: 0.875rem;
       }
 
       h2 {
@@ -79,7 +188,128 @@
     </style>
   </head>
   <body class="bg-gray-100 text-gray-800 antialiased leading-relaxed">
-    <div class="container mx-auto p-4 md:p-8">
+    <!-- Sticky Navigation -->
+    <nav
+      class="fixed left-0 top-0 w-64 h-full bg-white shadow-lg p-6 overflow-y-auto hidden lg:block"
+    >
+      <h3 class="text-lg font-bold mb-4 text-gray-800">Table of Contents</h3>
+      <div class="mb-4 flex gap-2">
+        <button
+          id="expand-all"
+          class="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+        >
+          Expand All
+        </button>
+        <button
+          id="collapse-all"
+          class="text-sm bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
+        >
+          Collapse All
+        </button>
+      </div>
+      <ul class="space-y-2 text-sm">
+        <li>
+          <a
+            href="#what-makes-good"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >What Makes a Good Interface?</a
+          >
+        </li>
+        <li>
+          <a
+            href="#practical-examples"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Practical Examples</a
+          >
+        </li>
+        <li>
+          <a
+            href="#score-framework"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >The SCORE(D) Framework</a
+          >
+        </li>
+        <li class="ml-4">
+          <a
+            href="#core-principles"
+            class="text-gray-600 hover:text-gray-800 hover:underline"
+            >Core Principles</a
+          >
+        </li>
+        <li class="ml-4">
+          <a
+            href="#advanced-qualities"
+            class="text-gray-600 hover:text-gray-800 hover:underline"
+            >Advanced Qualities</a
+          >
+        </li>
+        <li>
+          <a
+            href="#anti-patterns"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Common Anti-Patterns</a
+          >
+        </li>
+        <li>
+          <a
+            href="#interface-entropy"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Interface Entropy</a
+          >
+        </li>
+        <li>
+          <a
+            href="#encouraging-adoption"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Encouraging Adoption</a
+          >
+        </li>
+        <li>
+          <a
+            href="#wisdom-masters"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Wisdom from the Masters</a
+          >
+        </li>
+        <li>
+          <a
+            href="#ai-interfaces"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >AI and Intelligent Interfaces</a
+          >
+        </li>
+        <li class="ml-4">
+          <a
+            href="#ai-principles"
+            class="text-gray-600 hover:text-gray-800 hover:underline"
+            >AI Principles</a
+          >
+        </li>
+        <li class="ml-4">
+          <a
+            href="#ai-considerations"
+            class="text-gray-600 hover:text-gray-800 hover:underline"
+            >AI Design Considerations</a
+          >
+        </li>
+        <li>
+          <a
+            href="#key-takeaways"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Key Takeaways</a
+          >
+        </li>
+        <li>
+          <a
+            href="#further-reading"
+            class="text-blue-600 hover:text-blue-800 hover:underline"
+            >Further Reading</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div class="lg:ml-64 container mx-auto p-4 md:p-8">
       <header class="text-center mb-12">
         <h1
           class="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 rounded-lg bg-white p-4 shadow-md"
@@ -93,12 +323,23 @@
 
       <main class="space-y-6">
         <!-- What Makes a Good Programming Interface? -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="what-makes-good"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-what-makes-good"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>What Makes a Good Programming Interface?</h2>
           </div>
           <div
@@ -110,16 +351,541 @@
               should feel natural in your hand and do exactly what you expect,
               nothing more, nothing less.
             </p>
+
+            <!-- Characteristics Comparison Table -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Good vs Bad Interface Characteristics
+              </h3>
+              <div class="overflow-x-auto">
+                <table
+                  class="w-full border-collapse bg-white rounded-lg shadow-sm"
+                >
+                  <thead>
+                    <tr class="bg-blue-600 text-white">
+                      <th class="p-4 text-left font-semibold">Aspect</th>
+                      <th class="p-4 text-left font-semibold">
+                        ❌ Bad Interface
+                      </th>
+                      <th class="p-4 text-left font-semibold">
+                        ✅ Good Interface
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-semibold text-gray-700">Naming</td>
+                      <td class="p-4 text-red-700">
+                        <code class="bg-red-100 px-2 py-1 rounded"
+                          >processData2Final()</code
+                        ><br />
+                        <code class="bg-red-100 px-2 py-1 rounded"
+                          >doStuff()</code
+                        ><br />
+                        <code class="bg-red-100 px-2 py-1 rounded"
+                          >tmp_calc()</code
+                        >
+                      </td>
+                      <td class="p-4 text-green-700">
+                        <code class="bg-green-100 px-2 py-1 rounded"
+                          >validateUserInput()</code
+                        ><br />
+                        <code class="bg-green-100 px-2 py-1 rounded"
+                          >calculateTotalPrice()</code
+                        ><br />
+                        <code class="bg-green-100 px-2 py-1 rounded"
+                          >sendEmailNotification()</code
+                        >
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                      <td class="p-4 font-semibold text-gray-700">
+                        Parameters
+                      </td>
+                      <td class="p-4 text-red-700">
+                        Too many positional args<br />
+                        Boolean flags everywhere<br />
+                        Unclear parameter order
+                      </td>
+                      <td class="p-4 text-green-700">
+                        Configuration objects<br />
+                        Named parameters<br />
+                        Sensible defaults
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-semibold text-gray-700">
+                        Error Handling
+                      </td>
+                      <td class="p-4 text-red-700">
+                        Returns <code>null</code>, <code>-1</code>, or
+                        <code>false</code><br />
+                        Generic error messages<br />
+                        Silent failures
+                      </td>
+                      <td class="p-4 text-green-700">
+                        Throws specific exceptions<br />
+                        Descriptive error messages<br />
+                        Fail fast with context
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                      <td class="p-4 font-semibold text-gray-700">
+                        State Management
+                      </td>
+                      <td class="p-4 text-red-700">
+                        Hidden global state<br />
+                        Unexpected side effects<br />
+                        Order-dependent operations
+                      </td>
+                      <td class="p-4 text-green-700">
+                        Immutable where possible<br />
+                        Explicit state changes<br />
+                        Stateless operations
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-semibold text-gray-700">
+                        Consistency
+                      </td>
+                      <td class="p-4 text-red-700">
+                        Mixed naming conventions<br />
+                        Different patterns for similar ops<br />
+                        Unpredictable behavior
+                      </td>
+                      <td class="p-4 text-green-700">
+                        Uniform naming patterns<br />
+                        Consistent return types<br />
+                        Predictable behavior
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Real World Example -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Real-World Example: Date/Time APIs
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">
+                    ❌ JavaScript's Old Date API
+                  </h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code>// Confusing month indexing (0-based)
+const date = new Date(2024, 0, 15); // January 15, 2024
+
+// Mutable - methods change the object
+date.setMonth(5); // Now it's June
+
+// Unclear what getTime() returns
+const timestamp = date.getTime(); // Milliseconds since epoch?
+
+// Parsing is unpredictable
+new Date("2024-01-15"); // UTC or local time?
+new Date("01/15/2024"); // Depends on locale!</code></pre>
+                </div>
+
+                <div
+                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                >
+                  <h4 class="font-bold text-green-700 mb-2">
+                    ✅ Modern Date Libraries (e.g., date-fns)
+                  </h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code>// Clear, explicit functions
+import { parse, format, addMonths } from 'date-fns';
+
+// Explicit parsing with format
+const date = parse('15/01/2024', 'dd/MM/yyyy', new Date());
+
+// Immutable - returns new date
+const futureDate = addMonths(date, 5);
+
+// Clear formatting
+const formatted = format(date, 'MMMM do, yyyy');
+
+// Consistent, predictable behavior
+// No ambiguity about timezone handling</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- The Cost of Bad Interfaces -->
+            <div
+              class="mb-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-lg"
+            >
+              <h3 class="text-2xl font-semibold mb-4 text-yellow-800">
+                The Hidden Cost of Bad Interfaces
+              </h3>
+              <ul class="space-y-3 text-lg">
+                <li class="flex items-start">
+                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span
+                    ><b>Developer Time:</b> Hours spent reading docs, debugging,
+                    and working around quirks</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span
+                    ><b>Bug Introduction:</b> Misunderstood interfaces lead to
+                    incorrect usage and subtle bugs</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span
+                    ><b>Onboarding Friction:</b> New team members struggle to
+                    understand and use the codebase</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span
+                    ><b>Technical Debt:</b> Workarounds and wrapper functions
+                    accumulate over time</span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- Interface Evolution Diagram -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                How Interfaces Evolve
+              </h3>
+              <div
+                class="bg-gradient-to-r from-green-100 via-yellow-100 to-red-100 p-6 rounded-lg"
+              >
+                <div class="flex justify-between items-center text-center">
+                  <div class="flex-1">
+                    <div class="text-green-700 font-bold text-xl mb-2">
+                      Initial Design ✨
+                    </div>
+                    <p class="text-sm">Clean, minimal, focused</p>
+                    <code
+                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      >save(data)</code
+                    >
+                  </div>
+                  <div class="text-3xl">→</div>
+                  <div class="flex-1">
+                    <div class="text-yellow-700 font-bold text-xl mb-2">
+                      Feature Creep 📈
+                    </div>
+                    <p class="text-sm">New requirements added</p>
+                    <code
+                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      >save(data, options, callback)</code
+                    >
+                  </div>
+                  <div class="text-3xl">→</div>
+                  <div class="flex-1">
+                    <div class="text-red-700 font-bold text-xl mb-2">
+                      Interface Decay 💔
+                    </div>
+                    <p class="text-sm">Inconsistent, complex</p>
+                    <code
+                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      >save(data, opts, cb, meta, flags)</code
+                    >
+                  </div>
+                </div>
+              </div>
+              <p class="text-center mt-4 text-gray-600 italic">
+                Without careful stewardship, even the best interfaces degrade
+                over time
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Practical Examples -->
+        <section
+          id="practical-examples"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
+          <div
+            class="collapsible-header text-3xl font-bold text-blue-600"
+            data-target="content-practical-examples"
+          >
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Practical Examples: Before & After</h2>
+          </div>
+          <div
+            id="content-practical-examples"
+            class="collapsible-content collapsed"
+          >
+            <p class="text-lg mb-6">
+              Let's look at real code examples that demonstrate the difference
+              between poor and excellent interface design.
+            </p>
+
+            <!-- Example 1: Method Parameters -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Example 1: Method Parameters
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-javascript">// JavaScript
+function createUser(name, email, isAdmin, isActive, 
+                   sendEmail, timezone, language, theme) {
+  // What do all these booleans mean?
+  // Easy to mix up parameter order
+}
+
+// Usage is confusing:
+createUser("John", "john@example.com", true, true, 
+          false, "UTC", "en", "dark");</code></pre>
+                </div>
+
+                <div
+                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                >
+                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-javascript">// JavaScript
+function createUser(userData) {
+  const { name, email, role = 'user', 
+          status = 'active', preferences = {} } = userData;
+  // Clear, extensible, with sensible defaults
+}
+
+// Usage is self-documenting:
+createUser({
+  name: "John",
+  email: "john@example.com",
+  role: "admin",
+  preferences: { timezone: "UTC", language: "en" }
+});</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Example 2: Error Handling -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Example 2: Error Handling
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-python">// Python
+def process_data(data):
+    if not data:
+        return -1  # What does -1 mean?
+    if len(data) > 1000:
+        return None  # Different error type?
+    try:
+        result = complex_operation(data)
+        return result
+    except:
+        print("Error occurred")  # Swallows exception
+        return False  # Yet another error type!</code></pre>
+                </div>
+
+                <div
+                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                >
+                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-python">// Python
+class DataProcessingError(Exception):
+    """Base exception for data processing errors"""
+    pass
+
+def process_data(data):
+    if not data:
+        raise DataProcessingError("Data cannot be empty")
+    if len(data) > 1000:
+        raise DataProcessingError(
+            f"Data size {len(data)} exceeds limit of 1000"
+        )
+    
+    try:
+        return complex_operation(data)
+    except SpecificError as e:
+        raise DataProcessingError(
+            f"Failed to process: {e}"
+        ) from e</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Example 3: API Consistency -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Example 3: API Consistency
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-java">// Java - Inconsistent naming and behavior
+public class FileManager {
+    public void saveFile(String data, String path) { }
+    public String load_file(String path) { }  // Snake case?
+    public boolean deleteFileAtPath(String p) { } // Different param name
+    public List&lt;String&gt; getFiles() { }  // Returns paths
+    public List&lt;File&gt; listAllFiles() { }  // Returns File objects?
+}</code></pre>
+                </div>
+
+                <div
+                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                >
+                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-java">// Java - Consistent and predictable
+public class FileManager {
+    public void saveFile(Path path, String content) { }
+    public String loadFile(Path path) { }
+    public void deleteFile(Path path) { }
+    public List&lt;Path&gt; listFiles() { }
+    public List&lt;Path&gt; listFiles(Predicate&lt;Path&gt; filter) { }
+    
+    // Consistent error handling
+    // All methods throw IOException for I/O errors
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Example 4: Builder Pattern -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+                Example 4: Complex Object Creation
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-javascript">// JavaScript - Telescoping constructor antipattern
+class HttpClient {
+  constructor(baseUrl, timeout, retries, headers,
+              auth, proxy, ssl, keepAlive, maxRedirects,
+              responseType, validateStatus, decompress) {
+    // Too many parameters!
+    // What if I only want to set timeout?
+  }
+}
+
+// Nightmare to use:
+const client = new HttpClient(
+  "https://api.example.com", 5000, 3, {}, 
+  null, null, true, true, 5, "json", null, true
+);</code></pre>
+                </div>
+
+                <div
+                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                >
+                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <pre
+                    class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
+                  ><code class="language-javascript">// JavaScript - Fluent builder pattern
+class HttpClient {
+  constructor(baseUrl) {
+    this.config = {
+      baseUrl,
+      timeout: 30000,  // Sensible defaults
+      retries: 3,
+      headers: {}
+    };
+  }
+  
+  timeout(ms) {
+    this.config.timeout = ms;
+    return this;  // Enable chaining
+  }
+  
+  withAuth(token) {
+    this.config.headers.Authorization = `Bearer ${token}`;
+    return this;
+  }
+  
+  // ... other builder methods
+}
+
+// Clean and readable:
+const client = new HttpClient("https://api.example.com")
+  .timeout(5000)
+  .withAuth(token);</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-blue-50 rounded-lg">
+              <h3 class="text-xl font-semibold mb-3 text-blue-800">
+                Key Takeaways from Examples:
+              </h3>
+              <ul class="space-y-2 text-lg">
+                <li>
+                  • <b>Named parameters</b> beat positional arguments for
+                  clarity
+                </li>
+                <li>
+                  • <b>Consistent error handling</b> reduces cognitive load
+                </li>
+                <li>• <b>Predictable naming</b> makes APIs discoverable</li>
+                <li>
+                  • <b>Builder patterns</b> handle complex configuration
+                  elegantly
+                </li>
+                <li>• <b>Sensible defaults</b> make simple things simple</li>
+              </ul>
+            </div>
           </div>
         </section>
 
         <!-- The SCORE Framework -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="score-framework"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-score-framework"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>The SCORE(D) Framework</h2>
           </div>
           <div
@@ -158,7 +924,15 @@
                 class="collapsible-header sub-header"
                 data-target="sub-content-core-principles"
               >
-                <span class="toggle-icon sub-icon">+</span>
+                <svg
+                  class="toggle-icon sub-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
                 <h3>Core Principles</h3>
               </div>
               <div
@@ -209,7 +983,15 @@
                 class="collapsible-header sub-header"
                 data-target="sub-content-advanced-qualities"
               >
-                <span class="toggle-icon sub-icon">+</span>
+                <svg
+                  class="toggle-icon sub-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
                 <h3>Advanced Qualities</h3>
               </div>
               <div
@@ -270,13 +1052,343 @@
           </div>
         </section>
 
+        <!-- Common Anti-Patterns -->
+        <section
+          id="anti-patterns"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
+          <div
+            class="collapsible-header text-3xl font-bold text-blue-600"
+            data-target="content-anti-patterns"
+          >
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Common Interface Anti-Patterns</h2>
+          </div>
+          <div id="content-anti-patterns" class="collapsible-content collapsed">
+            <p class="text-lg mb-6">
+              Learn to recognize and avoid these common interface design
+              mistakes that plague codebases worldwide.
+            </p>
+
+            <!-- Anti-Pattern 1: Boolean Blindness -->
+            <div
+              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+            >
+              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+                1. Boolean Blindness
+              </h3>
+              <p class="text-lg mb-4">
+                Using multiple boolean parameters that make function calls
+                unreadable.
+              </p>
+
+              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ❌ What do these booleans mean?
+processOrder(order, true, false, true, false);
+
+// Is it: (validateFirst, sendEmail, updateInventory, notifyWarehouse)?
+// Or: (isPriority, skipValidation, dryRun, verbose)?</code></pre>
+              </div>
+
+              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <ul class="list-disc list-inside space-y-1 mb-4">
+                <li>
+                  Impossible to understand without checking the function
+                  signature
+                </li>
+                <li>Easy to mix up parameter order</li>
+                <li>Poor readability at call sites</li>
+              </ul>
+
+              <p class="text-lg mb-2">
+                <b>Fix:</b> Use an options object or enums
+              </p>
+              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ✅ Self-documenting
+processOrder(order, {
+  validateFirst: true,
+  sendEmail: false,
+  updateInventory: true,
+  notifyWarehouse: false
+});</code></pre>
+              </div>
+            </div>
+
+            <!-- Anti-Pattern 2: Stringly Typed -->
+            <div
+              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+            >
+              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+                2. Stringly Typed Programming
+              </h3>
+              <p class="text-lg mb-4">
+                Using strings where enums or specific types would be clearer.
+              </p>
+
+              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ❌ Prone to typos and no IDE help
+function setUserStatus(userId, status) {
+  // status could be "active", "Active", "ACTIVE", "enabled"?
+}
+
+setUserStatus(123, "actve"); // Typo! But no compile error</code></pre>
+              </div>
+
+              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <ul class="list-disc list-inside space-y-1 mb-4">
+                <li>No compile-time checking</li>
+                <li>Typos become runtime errors</li>
+                <li>No autocomplete support</li>
+                <li>Unclear what values are valid</li>
+              </ul>
+
+              <p class="text-lg mb-2"><b>Fix:</b> Use enums or constants</p>
+              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ✅ Type-safe with clear options
+enum UserStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  SUSPENDED = "SUSPENDED"
+}
+
+function setUserStatus(userId: number, status: UserStatus) {
+  // Type-safe, autocomplete works
+}
+
+setUserStatus(123, UserStatus.ACTIVE);</code></pre>
+              </div>
+            </div>
+
+            <!-- Anti-Pattern 3: God Object -->
+            <div
+              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+            >
+              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+                3. God Object / Kitchen Sink
+              </h3>
+              <p class="text-lg mb-4">
+                Creating massive interfaces that do everything.
+              </p>
+
+              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ❌ A class that does way too much
+class UserManager {
+  createUser() { }
+  deleteUser() { }
+  updateUser() { }
+  validateEmail() { }
+  sendEmail() { }
+  generateReport() { }
+  exportToCSV() { }
+  importFromCSV() { }
+  encryptPassword() { }
+  checkPasswordStrength() { }
+  generateAvatar() { }
+  resizeImage() { }
+  logActivity() { }
+  calculateAge() { }
+  // ... 50 more methods
+}</code></pre>
+              </div>
+
+              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <ul class="list-disc list-inside space-y-1 mb-4">
+                <li>Violates Single Responsibility Principle</li>
+                <li>Hard to test and maintain</li>
+                <li>Creates tight coupling</li>
+                <li>Difficult to understand scope</li>
+              </ul>
+
+              <p class="text-lg mb-2">
+                <b>Fix:</b> Split into focused interfaces
+              </p>
+              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ✅ Separate concerns
+class UserRepository {
+  create() { }
+  update() { }
+  delete() { }
+}
+
+class EmailService {
+  send() { }
+  validate() { }
+}
+
+class PasswordService {
+  encrypt() { }
+  checkStrength() { }
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- Anti-Pattern 4: Inconsistent Naming -->
+            <div
+              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+            >
+              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+                4. Inconsistent Naming Conventions
+              </h3>
+              <p class="text-lg mb-4">
+                Mixing different naming patterns within the same interface.
+              </p>
+
+              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ❌ Pick a style and stick to it!
+class DataProcessor {
+  getData() { }          // verb + noun
+  process_items() { }    // snake_case?!
+  itemCount() { }        // noun + noun
+  isValidData() { }      // question form
+  ValidateInput() { }    // PascalCase method?
+  clear_all_data() { }   // back to snake_case
+}</code></pre>
+              </div>
+
+              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <ul class="list-disc list-inside space-y-1 mb-4">
+                <li>Cognitive overhead switching between styles</li>
+                <li>Hard to predict method names</li>
+                <li>Looks unprofessional</li>
+                <li>Difficult to search/grep</li>
+              </ul>
+
+              <p class="text-lg mb-2">
+                <b>Fix:</b> Establish and follow conventions
+              </p>
+              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ✅ Consistent pattern
+class DataProcessor {
+  getData() { }
+  processItems() { }
+  getItemCount() { }
+  isDataValid() { }
+  validateInput() { }
+  clearAllData() { }
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- Anti-Pattern 5: Leaky Abstractions -->
+            <div
+              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+            >
+              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+                5. Leaky Abstractions
+              </h3>
+              <p class="text-lg mb-4">
+                Exposing implementation details through the interface.
+              </p>
+
+              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ❌ Implementation details leaked
+class Database {
+  executeMySQLQuery(query: string) { }
+  getMongoDBConnection() { }
+  closeRedisSocket() { }
+  flushMemcachedBuffer() { }
+}
+
+// User needs to know we use MySQL, MongoDB, Redis, etc.</code></pre>
+              </div>
+
+              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <ul class="list-disc list-inside space-y-1 mb-4">
+                <li>Can't change implementation without breaking clients</li>
+                <li>Exposes unnecessary complexity</li>
+                <li>Violates abstraction principles</li>
+              </ul>
+
+              <p class="text-lg mb-2">
+                <b>Fix:</b> Abstract the implementation
+              </p>
+              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                <pre
+                  class="text-sm"
+                ><code class="language-javascript">// ✅ Implementation hidden
+interface DataStore {
+  save(key: string, value: any): void;
+  get(key: string): any;
+  delete(key: string): void;
+  close(): void;
+}
+
+// Users don't need to know if it's MySQL, Redis, etc.</code></pre>
+              </div>
+            </div>
+
+            <!-- Summary Box -->
+            <div
+              class="mt-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200"
+            >
+              <h3 class="text-xl font-semibold mb-3 text-blue-800">
+                Remember: Good Interfaces Are Discovered, Not Designed
+              </h3>
+              <p class="text-lg mb-3">
+                The best interfaces often emerge from refactoring bad ones.
+                Start simple, listen to pain points, and evolve thoughtfully.
+              </p>
+              <ul class="space-y-2 text-lg">
+                <li>
+                  ✅ <b>Start minimal</b> - You can always add, but removing is
+                  painful
+                </li>
+                <li>
+                  ✅ <b>Be consistent</b> - Pick patterns and stick to them
+                </li>
+                <li>✅ <b>Hide complexity</b> - Make the common case easy</li>
+                <li>
+                  ✅ <b>Fail clearly</b> - When things go wrong, be helpful
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         <!-- The Challenge: Interface Entropy -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="interface-entropy"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-interface-entropy"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>The Challenge: Interface Entropy</h2>
           </div>
           <div
@@ -323,12 +1435,23 @@
         </section>
 
         <!-- Encouraging Adoption of These Principles -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="encouraging-adoption"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-getting-others"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>Encouraging Adoption of These Principles</h2>
           </div>
           <div
@@ -385,12 +1508,23 @@
         </section>
 
         <!-- Wisdom from the Masters -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="wisdom-masters"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-wisdom-masters"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>Wisdom from the Masters</h2>
           </div>
           <div
@@ -427,12 +1561,23 @@
         </section>
 
         <!-- AI and Intelligent Interfaces -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="ai-interfaces"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-ai-interfaces"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>AI and Intelligent Interfaces</h2>
           </div>
           <div id="content-ai-interfaces" class="collapsible-content collapsed">
@@ -449,7 +1594,15 @@
                 class="collapsible-header sub-header"
                 data-target="sub-content-ai-principles"
               >
-                <span class="toggle-icon sub-icon">+</span>
+                <svg
+                  class="toggle-icon sub-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
                 <h3>New Principles for AI Systems</h3>
               </div>
               <div
@@ -494,7 +1647,15 @@
                 class="collapsible-header sub-header"
                 data-target="sub-content-ai-considerations"
               >
-                <span class="toggle-icon sub-icon">+</span>
+                <svg
+                  class="toggle-icon sub-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
                 <h3>AI-Specific Design Considerations</h3>
               </div>
               <div
@@ -528,7 +1689,15 @@
                 class="collapsible-header sub-header"
                 data-target="sub-content-ai-adoption"
               >
-                <span class="toggle-icon sub-icon">+</span>
+                <svg
+                  class="toggle-icon sub-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
                 <h3>Team Adoption for AI Interfaces</h3>
               </div>
               <div
@@ -559,12 +1728,23 @@
         </section>
 
         <!-- Key Takeaways -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="key-takeaways"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-key-takeaways"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>Key Takeaways</h2>
           </div>
           <div id="content-key-takeaways" class="collapsible-content collapsed">
@@ -594,12 +1774,23 @@
         </section>
 
         <!-- Further Reading & Resources -->
-        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+        <section
+          id="further-reading"
+          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+        >
           <div
             class="collapsible-header text-3xl font-bold text-blue-600"
             data-target="content-further-reading"
           >
-            <span class="toggle-icon">+</span>
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             <h2>Further Reading & Resources</h2>
           </div>
           <div
@@ -707,24 +1898,65 @@
           const content = document.getElementById(targetId);
           const toggleIcon = header.querySelector(".toggle-icon");
 
-          // Initialize all sections as collapsed and set icon to '+'
-          // Also ensure no margin is applied on initial collapse
+          // Initialize all sections as collapsed
           if (content && toggleIcon) {
             content.classList.add("collapsed");
-            toggleIcon.textContent = "+";
-            header.classList.remove("expanded-header"); // Ensure no margin
+            header.classList.remove("expanded-header");
           }
 
           header.addEventListener("click", () => {
             if (content && toggleIcon) {
               content.classList.toggle("collapsed");
               if (content.classList.contains("collapsed")) {
-                toggleIcon.textContent = "+";
-                header.classList.remove("expanded-header"); // Remove margin when collapsing
+                toggleIcon.classList.remove("rotated");
+                header.classList.remove("expanded-header");
               } else {
-                toggleIcon.textContent = "-";
-                header.classList.add("expanded-header"); // Add margin when expanding
+                toggleIcon.classList.add("rotated");
+                header.classList.add("expanded-header");
               }
+            }
+          });
+        });
+
+        // Initialize Prism for syntax highlighting
+        Prism.highlightAll();
+
+        // Expand All functionality
+        document.getElementById("expand-all").addEventListener("click", () => {
+          const contents = document.querySelectorAll(".collapsible-content");
+          const icons = document.querySelectorAll(".toggle-icon");
+          const headers = document.querySelectorAll(".collapsible-header");
+
+          contents.forEach((content) => content.classList.remove("collapsed"));
+          icons.forEach((icon) => icon.classList.add("rotated"));
+          headers.forEach((header) => header.classList.add("expanded-header"));
+        });
+
+        // Collapse All functionality
+        document
+          .getElementById("collapse-all")
+          .addEventListener("click", () => {
+            const contents = document.querySelectorAll(".collapsible-content");
+            const icons = document.querySelectorAll(".toggle-icon");
+            const headers = document.querySelectorAll(".collapsible-header");
+
+            contents.forEach((content) => content.classList.add("collapsed"));
+            icons.forEach((icon) => icon.classList.remove("rotated"));
+            headers.forEach((header) =>
+              header.classList.remove("expanded-header"),
+            );
+          });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
             }
           });
         });
