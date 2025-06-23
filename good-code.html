@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What Makes Good Code? | Principles & Best Practices</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Learn what defines good code through practical principles, real examples, and actionable guidelines. Discover how to write code that is clear, maintainable, and a joy to work with." />
+    <meta name="keywords" content="good code, code quality, clean code, software craftsmanship, best practices, maintainable code, code principles" />
+    <meta name="author" content="Programming Best Practices Guide" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tslateman.github.io/interface-design/good-code.html" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://tslateman.github.io/interface-design/good-code.html" />
+    <meta property="og:title" content="What Makes Good Code?" />
+    <meta property="og:description" content="A comprehensive guide to writing code that is clear, maintainable, and a joy to work with." />
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .collapsible-header {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        user-select: none;
+      }
+      .collapsible-header.expanded-header {
+        margin-bottom: 24px;
+      }
+      .collapsible-content {
+        max-height: 2000px;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+        opacity: 1;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+      }
+      .toggle-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 1rem;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+      }
+      .toggle-icon.rotated {
+        transform: rotate(90deg);
+      }
+      pre[class*="language-"] {
+        margin: 0;
+        border-radius: 0.5rem;
+      }
+      code[class*="language-"] {
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 antialiased leading-relaxed">
+    <div class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 rounded-lg bg-white p-4 shadow-md">
+          What Makes Good Code?
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Beyond working correctly, good code is a joy to read, modify, and build upon.
+        </p>
+        <div class="mt-4">
+          <a href="index.html" class="text-blue-600 hover:text-blue-800 underline">← Back to Interface Design</a>
+        </div>
+      </header>
+
+      <main class="space-y-6">
+        <!-- The Essence of Good Code -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-essence">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>The Essence of Good Code</h2>
+          </div>
+          <div id="content-essence" class="collapsible-content collapsed">
+            <p class="text-lg mb-6">
+              Good code is like good writing: it communicates clearly, respects the reader's time, and accomplishes its purpose elegantly. It's not about showing off clever tricks or cramming everything into one line—it's about empathy for the next developer who reads it (often yourself in six months).
+            </p>
+            
+            <div class="bg-blue-50 p-6 rounded-lg mb-6">
+              <h3 class="text-xl font-semibold mb-3 text-blue-800">The Three Audiences of Code</h3>
+              <ol class="space-y-3 text-lg">
+                <li><b>1. The Computer:</b> It must work correctly and efficiently</li>
+                <li><b>2. Other Developers:</b> It must be understandable and maintainable</li>
+                <li><b>3. Future You:</b> It must be clear enough that you can understand it months later</li>
+              </ol>
+              <p class="mt-4 text-gray-700 italic">Good code optimizes for all three, but prioritizes human understanding.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Core Principles -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-principles">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Core Principles of Good Code</h2>
+          </div>
+          <div id="content-principles" class="collapsible-content collapsed">
+            <!-- Clarity -->
+            <div class="mb-8 p-6 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <h3 class="text-2xl font-semibold mb-3 text-green-800">1. Clarity Above Cleverness</h3>
+              <p class="text-lg mb-4">Code is read far more often than it's written. Optimize for readability.</p>
+              
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Clever but Unclear</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">// What does this do?
+const r = u.map(x => x.a ? x.b : x.c).filter(Boolean).reduce((a,b) => a+b, 0);
+
+// Nested ternary madness
+const status = user.isActive ? user.isPremium ? 'premium' : 'basic' : 'inactive';</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                  <h4 class="font-bold text-green-700 mb-2">✅ Clear and Obvious</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">// Calculate total of valid amounts
+const validAmounts = users
+  .map(user => user.isValid ? user.amount : user.defaultAmount)
+  .filter(amount => amount != null);
+const total = validAmounts.reduce((sum, amount) => sum + amount, 0);
+
+// Clear status determination
+function getUserStatus(user) {
+  if (!user.isActive) return 'inactive';
+  if (user.isPremium) return 'premium';
+  return 'basic';
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simplicity -->
+            <div class="mb-8 p-6 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <h3 class="text-2xl font-semibold mb-3 text-green-800">2. Simplicity Through Focus</h3>
+              <p class="text-lg mb-4">Each piece of code should do one thing well. Complexity emerges from composition, not complication.</p>
+              
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Doing Too Much</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Function does multiple unrelated things
+def process_user_data(users):
+    # Validate users
+    valid_users = []
+    for user in users:
+        if user.age > 18 and user.email:
+            valid_users.append(user)
+    
+    # Calculate statistics
+    total_age = sum(u.age for u in valid_users)
+    avg_age = total_age / len(valid_users)
+    
+    # Send emails
+    for user in valid_users:
+        send_welcome_email(user.email)
+    
+    # Save to database
+    db.save_users(valid_users)
+    
+    return avg_age</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                  <h4 class="font-bold text-green-700 mb-2">✅ Single Responsibility</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Each function has one clear purpose
+def validate_users(users):
+    return [u for u in users if u.age > 18 and u.email]
+
+def calculate_average_age(users):
+    if not users:
+        return 0
+    return sum(u.age for u in users) / len(users)
+
+def send_welcome_emails(users):
+    for user in users:
+        send_welcome_email(user.email)
+
+# Compose them as needed
+valid_users = validate_users(users)
+avg_age = calculate_average_age(valid_users)
+send_welcome_emails(valid_users)
+db.save_users(valid_users)</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Consistency -->
+            <div class="mb-8 p-6 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <h3 class="text-2xl font-semibold mb-3 text-green-800">3. Consistency is Kindness</h3>
+              <p class="text-lg mb-4">Predictable patterns reduce cognitive load. Pick conventions and stick to them.</p>
+              
+              <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+                <h4 class="font-bold text-yellow-800 mb-2">📋 Consistency Checklist</h4>
+                <ul class="space-y-2 text-lg">
+                  <li>✓ <b>Naming:</b> camelCase or snake_case, not both</li>
+                  <li>✓ <b>Error Handling:</b> Always the same pattern (exceptions, callbacks, or promises)</li>
+                  <li>✓ <b>File Structure:</b> Predictable organization</li>
+                  <li>✓ <b>Code Style:</b> Consistent formatting (use a linter!)</li>
+                  <li>✓ <b>Patterns:</b> Similar problems solved similarly</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Defensive Coding -->
+            <div class="mb-8 p-6 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <h3 class="text-2xl font-semibold mb-3 text-green-800">4. Defensive but Not Paranoid</h3>
+              <p class="text-lg mb-4">Handle edge cases gracefully without overcomplicating the happy path.</p>
+              
+              <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm mb-4"><code class="language-javascript">// ✅ Good defensive coding
+function calculateDiscount(price, discountPercent) {
+  // Validate inputs
+  if (typeof price !== 'number' || price < 0) {
+    throw new Error('Price must be a positive number');
+  }
+  
+  if (typeof discountPercent !== 'number' || discountPercent < 0 || discountPercent > 100) {
+    throw new Error('Discount must be between 0 and 100');
+  }
+  
+  // Simple, clear calculation
+  return price * (1 - discountPercent / 100);
+}</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Practical Examples -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-examples">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Real-World Examples</h2>
+          </div>
+          <div id="content-examples" class="collapsible-content collapsed">
+            <!-- Example: Naming -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">The Power of Good Names</h3>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Cryptic Names</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">// What do these do?
+function calc(x, y, z) {
+  return x * y * (1 - z / 100);
+}
+
+const d = new Date();
+const u = getUser();
+const p = calc(100, 2, 10);</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                  <h4 class="font-bold text-green-700 mb-2">✅ Self-Documenting Names</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">// Intent is immediately clear
+function calculatePriceAfterDiscount(basePrice, quantity, discountPercent) {
+  return basePrice * quantity * (1 - discountPercent / 100);
+}
+
+const currentDate = new Date();
+const loggedInUser = getUser();
+const totalPrice = calculatePriceAfterDiscount(100, 2, 10);</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Example: Error Handling -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">Error Handling That Helps</h3>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Unhelpful Errors</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">function connectToDatabase(config) {
+  if (!config) {
+    throw new Error('Error');
+  }
+  
+  if (!config.host || !config.port) {
+    return null; // Silent failure
+  }
+  
+  try {
+    return connect(config);
+  } catch (e) {
+    console.log('Failed'); // Swallows details
+    return false;
+  }
+}</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                  <h4 class="font-bold text-green-700 mb-2">✅ Helpful Error Messages</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-javascript">function connectToDatabase(config) {
+  if (!config) {
+    throw new Error('Database config is required');
+  }
+  
+  if (!config.host) {
+    throw new Error(`Database host is required, received: ${JSON.stringify(config)}`);
+  }
+  
+  if (!config.port) {
+    throw new Error(`Database port is required, received: ${JSON.stringify(config)}`);
+  }
+  
+  try {
+    return connect(config);
+  } catch (error) {
+    throw new Error(`Failed to connect to ${config.host}:${config.port} - ${error.message}`);
+  }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Example: Comments -->
+            <div class="mb-8">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">Comments: Why, Not What</h3>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+                  <h4 class="font-bold text-red-700 mb-2">❌ Redundant Comments</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-java">// Set age to 25
+user.setAge(25);
+
+// Loop through users
+for (User user : users) {
+  // Check if user is active
+  if (user.isActive()) {
+    // Send email to user
+    sendEmail(user);
+  }
+}</code></pre>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                  <h4 class="font-bold text-green-700 mb-2">✅ Valuable Comments</h4>
+                  <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-java">// Default age for COPPA compliance
+user.setAge(25);
+
+// Send reactivation emails to users who were active 
+// in the last 30 days but haven't logged in recently
+for (User user : recentlyInactiveUsers) {
+  if (user.wasActiveWithin(Days.THIRTY)) {
+    // Rate limited to 100/hour by SendGrid
+    emailQueue.add(createReactivationEmail(user));
+  }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Code Smells -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-smells">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Code Smells to Avoid</h2>
+          </div>
+          <div id="content-smells" class="collapsible-content collapsed">
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Long Methods -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Long Methods</h3>
+                <p class="mb-3">If you need to scroll to see the whole function, it's doing too much.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Extract smaller functions with clear names</p>
+              </div>
+
+              <!-- Deep Nesting -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Deep Nesting</h3>
+                <p class="mb-3">Multiple levels of indentation make code hard to follow.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Early returns, extract functions, simplify logic</p>
+              </div>
+
+              <!-- Magic Numbers -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Magic Numbers</h3>
+                <p class="mb-3">Unexplained numbers scattered throughout code.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Named constants with clear meaning</p>
+              </div>
+
+              <!-- Copy-Paste Code -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Duplicated Code</h3>
+                <p class="mb-3">Same logic repeated in multiple places.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Extract shared functionality</p>
+              </div>
+
+              <!-- Dead Code -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Dead Code</h3>
+                <p class="mb-3">Commented out code, unused variables, unreachable branches.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Delete it (version control remembers)</p>
+              </div>
+
+              <!-- Premature Optimization -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-xl font-semibold mb-3 text-red-800">🚨 Premature Optimization</h3>
+                <p class="mb-3">Complex code for hypothetical performance gains.</p>
+                <p class="text-sm text-gray-700"><b>Fix:</b> Write clear code first, optimize with data</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- The Test of Time -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-test-time">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>The Test of Time</h2>
+          </div>
+          <div id="content-test-time" class="collapsible-content collapsed">
+            <p class="text-lg mb-6">
+              Good code ages well. It remains understandable and modifiable long after it was written. Here's how to write code that stands the test of time:
+            </p>
+
+            <div class="space-y-6">
+              <!-- Write for Change -->
+              <div class="p-6 bg-blue-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3 text-blue-800">Write for Change</h3>
+                <ul class="space-y-2 text-lg">
+                  <li>• Assume requirements will evolve</li>
+                  <li>• Make the easy changes easy</li>
+                  <li>• Isolate the parts likely to change</li>
+                  <li>• Use configuration for values that might vary</li>
+                </ul>
+              </div>
+
+              <!-- Document Decisions -->
+              <div class="p-6 bg-green-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3 text-green-800">Document the "Why"</h3>
+                <ul class="space-y-2 text-lg">
+                  <li>• Code shows what and how, comments explain why</li>
+                  <li>• Document non-obvious decisions</li>
+                  <li>• Explain trade-offs you made</li>
+                  <li>• Link to relevant discussions or tickets</li>
+                </ul>
+              </div>
+
+              <!-- Make It Testable -->
+              <div class="p-6 bg-yellow-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3 text-yellow-800">Make It Testable</h3>
+                <ul class="space-y-2 text-lg">
+                  <li>• Pure functions are easier to test</li>
+                  <li>• Inject dependencies rather than hardcoding</li>
+                  <li>• Separate business logic from I/O</li>
+                  <li>• Tests document expected behavior</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Reference -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-quick-ref">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Quick Reference Card</h2>
+          </div>
+          <div id="content-quick-ref" class="collapsible-content collapsed">
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Do's -->
+              <div class="bg-green-50 p-6 rounded-lg border-2 border-green-200">
+                <h3 class="text-2xl font-bold mb-4 text-green-700">✅ DO</h3>
+                <ul class="space-y-2 text-lg">
+                  <li>✓ Write code for humans first</li>
+                  <li>✓ Keep functions small and focused</li>
+                  <li>✓ Use descriptive names</li>
+                  <li>✓ Handle errors explicitly</li>
+                  <li>✓ Be consistent with patterns</li>
+                  <li>✓ Refactor when you understand better</li>
+                  <li>✓ Write tests for complex logic</li>
+                  <li>✓ Document surprising decisions</li>
+                </ul>
+              </div>
+
+              <!-- Don'ts -->
+              <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                <h3 class="text-2xl font-bold mb-4 text-red-700">❌ DON'T</h3>
+                <ul class="space-y-2 text-lg">
+                  <li>✗ Optimize prematurely</li>
+                  <li>✗ Use clever one-liners</li>
+                  <li>✗ Copy-paste code</li>
+                  <li>✗ Ignore error cases</li>
+                  <li>✗ Mix concerns in one function</li>
+                  <li>✗ Leave commented-out code</li>
+                  <li>✗ Use magic numbers</li>
+                  <li>✗ Assume context is obvious</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-gray-100 rounded-lg text-center">
+              <p class="text-xl font-semibold text-gray-800 mb-2">The Golden Rule of Code</p>
+              <p class="text-2xl text-blue-700 font-bold">
+                "Write code as if the person maintaining it is a violent psychopath who knows where you live."
+              </p>
+              <p class="text-gray-600 mt-2">- Martin Golding</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final Thoughts -->
+        <section class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+          <div class="collapsible-header text-3xl font-bold text-blue-600" data-target="content-final">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <h2>Final Thoughts</h2>
+          </div>
+          <div id="content-final" class="collapsible-content collapsed">
+            <p class="text-lg mb-6">
+              Writing good code is a craft that improves with practice and feedback. It's not about perfection—it's about continuous improvement and empathy for others (including future you).
+            </p>
+
+            <div class="bg-gradient-to-r from-blue-50 to-green-50 p-8 rounded-lg">
+              <h3 class="text-2xl font-semibold mb-4 text-gray-800">Remember:</h3>
+              <ul class="space-y-3 text-lg">
+                <li class="flex items-start">
+                  <span class="text-blue-600 mr-2">•</span>
+                  <span><b>Good code is honest</b> - It does what it says, no surprises</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-600 mr-2">•</span>
+                  <span><b>Good code is humble</b> - It doesn't try to be clever</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-600 mr-2">•</span>
+                  <span><b>Good code is kind</b> - It helps the next developer succeed</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-600 mr-2">•</span>
+                  <span><b>Good code evolves</b> - It's never done, just good enough for now</span>
+                </li>
+              </ul>
+            </div>
+
+            <p class="text-xl text-center mt-8 text-gray-700 font-semibold">
+              The best code is not the code that impresses other developers.<br>
+              It's the code that doesn't need to.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="text-center mt-12 pt-8 border-t border-gray-300 text-gray-500 text-sm">
+        <p>&copy; 2025 Good Code Principles - For Developers Who Care</p>
+        <p class="mt-2">
+          <a href="index.html" class="text-blue-600 hover:text-blue-800 underline">Back to Interface Design Guide</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const headers = document.querySelectorAll(".collapsible-header");
+
+        headers.forEach((header) => {
+          const targetId = header.dataset.target;
+          const content = document.getElementById(targetId);
+          const toggleIcon = header.querySelector(".toggle-icon");
+
+          // Initialize all sections as collapsed
+          if (content && toggleIcon) {
+            content.classList.add("collapsed");
+            header.classList.remove("expanded-header");
+          }
+
+          header.addEventListener("click", () => {
+            if (content && toggleIcon) {
+              content.classList.toggle("collapsed");
+              if (content.classList.contains("collapsed")) {
+                toggleIcon.classList.remove("rotated");
+                header.classList.remove("expanded-header");
+              } else {
+                toggleIcon.classList.add("rotated");
+                header.classList.add("expanded-header");
+              }
+            }
+          });
+        });
+
+        // Initialize Prism for syntax highlighting
+        Prism.highlightAll();
+      });
+    </script>
+  </body>
+</html>
