@@ -242,219 +242,83 @@
     </style>
   </head>
   <body class="antialiased leading-relaxed">
-    <!-- Sticky Navigation -->
-    <nav
-      class="fixed left-0 top-0 w-64 h-full shadow-lg p-6 overflow-y-auto hidden lg:block"
-      style="background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);"
-    >
-      <h3 class="text-lg font-bold mb-4" style="color: var(--text-primary);">Table of Contents</h3>
-      <div class="mb-4 flex gap-2 flex-wrap">
-        <button
-          id="expand-all"
-          class="text-sm text-white px-3 py-1 rounded transition-colors"
-          style="background-color: var(--accent-blue);"
-          onmouseover="this.style.backgroundColor='var(--accent-blue-dark)'"
-          onmouseout="this.style.backgroundColor='var(--accent-blue)'"
-        >
-          Expand All
-        </button>
-        <button
-          id="collapse-all"
-          class="text-sm text-white px-3 py-1 rounded transition-colors"
-          style="background-color: var(--text-secondary);"
-          onmouseover="this.style.backgroundColor='var(--text-primary)'"
-          onmouseout="this.style.backgroundColor='var(--text-secondary)'"
-        >
-          Collapse All
-        </button>
-        <button
-          id="theme-toggle"
-          class="text-sm px-3 py-1 rounded border"
-          style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color);"
-          title="Toggle dark mode"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            <path class="moon-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" style="display: none;" />
-          </svg>
-        </button>
-      </div>
-      <ul class="space-y-2 text-sm">
-        <li>
-          <a
-            href="#what-makes-good"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >What Makes a Good Interface?</a
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+      <header class="mb-12">
+        <!-- Control buttons -->
+        <div class="flex justify-end mb-4 gap-2">
+          <button
+            id="expand-all"
+            class="text-sm text-white px-3 py-1 rounded transition-colors"
+            style="background-color: var(--accent-blue);"
+            onmouseover="this.style.backgroundColor='var(--accent-blue-dark)'"
+            onmouseout="this.style.backgroundColor='var(--accent-blue)'"
           >
-        </li>
-        <li>
-          <a
-            href="#practical-examples"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Practical Examples</a
+            Expand All
+          </button>
+          <button
+            id="collapse-all"
+            class="text-sm text-white px-3 py-1 rounded transition-colors"
+            style="background-color: var(--text-secondary);"
+            onmouseover="this.style.backgroundColor='var(--text-primary)'"
+            onmouseout="this.style.backgroundColor='var(--text-secondary)'"
           >
-        </li>
-        <li>
-          <a
-            href="#score-framework"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >The SCORE(D) Framework</a
+            Collapse All
+          </button>
+          <button
+            id="theme-toggle"
+            class="text-sm px-3 py-1 rounded border"
+            style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color);"
+            title="Toggle dark mode"
           >
-        </li>
-        <li class="ml-4">
-          <a
-            href="#core-principles"
-            class="hover:underline transition-colors"
-            style="color: var(--text-secondary);"
-            onmouseover="this.style.color='var(--text-primary)'"
-            onmouseout="this.style.color='var(--text-secondary)'"
-            >Core Principles</a
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              <path class="moon-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" style="display: none;" />
+            </svg>
+          </button>
+        </div>
+        
+        <div class="text-center">
+          <h1
+            class="text-4xl md:text-5xl font-extrabold mb-4 rounded-lg p-4"
+            style="color: var(--accent-blue-dark); background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);"
           >
-        </li>
-        <li class="ml-4">
-          <a
-            href="#advanced-qualities"
-            class="hover:underline transition-colors"
-            style="color: var(--text-secondary);"
-            onmouseover="this.style.color='var(--text-primary)'"
-            onmouseout="this.style.color='var(--text-secondary)'"
-            >Advanced Qualities</a
-          >
-        </li>
-        <li>
-          <a
-            href="#anti-patterns"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Common Anti-Patterns</a
-          >
-        </li>
-        <li>
-          <a
-            href="#interface-entropy"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Interface Entropy</a
-          >
-        </li>
-        <li>
-          <a
-            href="#encouraging-adoption"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Encouraging Adoption</a
-          >
-        </li>
-        <li>
-          <a
-            href="#wisdom-masters"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Wisdom from the Masters</a
-          >
-        </li>
-        <li>
-          <a
-            href="#ai-interfaces"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >AI and Intelligent Interfaces</a
-          >
-        </li>
-        <li class="ml-4">
-          <a
-            href="#ai-principles"
-            class="hover:underline transition-colors"
-            style="color: var(--text-secondary);"
-            onmouseover="this.style.color='var(--text-primary)'"
-            onmouseout="this.style.color='var(--text-secondary)'"
-            >AI Principles</a
-          >
-        </li>
-        <li class="ml-4">
-          <a
-            href="#ai-considerations"
-            class="hover:underline transition-colors"
-            style="color: var(--text-secondary);"
-            onmouseover="this.style.color='var(--text-primary)'"
-            onmouseout="this.style.color='var(--text-secondary)'"
-            >AI Design Considerations</a
-          >
-        </li>
-        <li>
-          <a
-            href="#key-takeaways"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Key Takeaways</a
-          >
-        </li>
-        <li>
-          <a
-            href="#further-reading"
-            class="hover:underline transition-colors"
-            style="color: var(--text-link);"
-            onmouseover="this.style.color='var(--text-link-hover)'"
-            onmouseout="this.style.color='var(--text-link)'"
-            >Further Reading</a
-          >
-        </li>
-      </ul>
-      <div class="mt-6 pt-6 border-t" style="border-color: var(--border-color);">
-        <p class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Related Guides</p>
-        <a
-          href="good-code.html"
-          class="hover:underline flex items-center transition-colors"
-          style="color: var(--text-link);"
-          onmouseover="this.style.color='var(--text-link-hover)'"
-          onmouseout="this.style.color='var(--text-link)'"
-        >
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-          What Makes Good Code?
-        </a>
-      </div>
-    </nav>
-
-    <div class="lg:ml-64 container mx-auto p-4 md:p-8">
-      <header class="text-center mb-12">
-        <h1
-          class="text-4xl md:text-5xl font-extrabold mb-4 rounded-lg p-4"
-          style="color: var(--accent-blue-dark); background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);"
-        >
-          Better Programming Interface Design
-        </h1>
-        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
-          A practical guide to building interfaces that don't suck.
-        </p>
-        <div class="mt-4">
-          <a href="good-code.html" class="underline transition-colors" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">
-            Also check out: What Makes Good Code? →
-          </a>
+            Better Programming Interface Design
+          </h1>
+          <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
+            A practical guide to building interfaces that don't suck.
+          </p>
+          <div class="mt-4">
+            <a href="good-code.html" class="underline transition-colors" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">
+              Also check out: What Makes Good Code? →
+            </a>
+          </div>
         </div>
       </header>
+
+      <!-- Mini Table of Contents -->
+      <nav class="mb-8 p-6 rounded-lg" style="background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);">
+        <h2 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Quick Navigation</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <a href="#what-makes-good" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            1. Introduction & Examples
+          </a>
+          <a href="#score-framework" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            2. The SCORE Framework
+          </a>
+          <a href="#anti-patterns" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            3. Common Anti-Patterns
+          </a>
+          <a href="#maintaining-quality" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            4. Maintaining Quality Over Time
+          </a>
+          <a href="#ai-interfaces" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            5. AI and Intelligent Interfaces
+          </a>
+          <a href="#further-reading" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+            6. Further Reading
+          </a>
+        </div>
+      </nav>
 
       <main class="space-y-6">
         <!-- What Makes a Good Programming Interface? -->
@@ -748,39 +612,16 @@ const formatted = format(date, 'MMMM do, yyyy');
                 over time
               </p>
             </div>
-          </div>
-        </section>
 
-        <!-- Practical Examples -->
-        <section
-          id="practical-examples"
-          class="p-6 md:p-10 rounded-xl"
-          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
-        >
-          <div
-            class="collapsible-header text-3xl font-bold"
-            style="color: var(--accent-blue);"
-            data-target="content-practical-examples"
-          >
-            <svg
-              class="toggle-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-            <h2>Practical Examples: Before & After</h2>
-          </div>
-          <div
-            id="content-practical-examples"
-            class="collapsible-content collapsed"
-          >
-            <p class="text-lg mb-6">
-              Let's look at real code examples that demonstrate the difference
-              between poor and excellent interface design.
-            </p>
+            <!-- Practical Examples Section -->
+            <div class="mt-12 pt-8 border-t-2" style="border-color: var(--border-color);">
+              <h2 class="text-3xl font-bold mb-6" style="color: var(--accent-blue);">
+                Practical Examples: Before & After
+              </h2>
+              <p class="text-lg mb-6">
+                Let's look at real code examples that demonstrate the difference
+                between poor and excellent interface design.
+              </p>
 
             <!-- Example 1: Method Parameters -->
             <div class="mb-8">
@@ -1015,6 +856,7 @@ const client = new HttpClient("https://api.example.com")
                 <li>• <b>Sensible defaults</b> make simple things simple</li>
               </ul>
             </div>
+            </div>
           </div>
         </section>
 
@@ -1200,6 +1042,35 @@ const client = new HttpClient("https://api.example.com")
                   </li>
                 </ul>
               </div>
+            </div>
+
+            <!-- Key Takeaways -->
+            <div class="mt-12 pt-8 border-t-2" style="border-color: var(--border-color);">
+              <h2 class="text-3xl font-bold mb-6" style="color: var(--accent-blue);">
+                Key Takeaways
+              </h2>
+              <ul class="space-y-4 text-lg">
+                <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
+                  The best interfaces disappear - you stop thinking about the
+                  interface and focus on solving your actual problem. They become
+                  extensions of your thought process rather than obstacles to it.
+                </li>
+                <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
+                  Steady, consistent pressure works better than passionate
+                  crusades. Interface design is as much about human considerations
+                  as it is about technical architecture.
+                </li>
+                <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
+                  With AI, this human element becomes even more critical - we're
+                  not just designing for efficiency, but for trust, understanding,
+                  and appropriate reliance on intelligent systems.
+                </li>
+              </ul>
+              <p class="text-lg mt-6">
+                Remember: Code is primarily a communication medium between humans,
+                not just instructions for machines. AI interfaces add a new
+                participant to this conversation.
+              </p>
             </div>
           </div>
         </section>
@@ -1530,16 +1401,16 @@ interface DataStore {
           </div>
         </section>
 
-        <!-- The Challenge: Interface Entropy -->
+        <!-- Maintaining Quality Over Time -->
         <section
-          id="interface-entropy"
+          id="maintaining-quality"
           class="p-6 md:p-10 rounded-xl"
           style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
-            data-target="content-interface-entropy"
+            data-target="content-maintaining-quality"
           >
             <svg
               class="toggle-icon"
@@ -1550,10 +1421,10 @@ interface DataStore {
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
-            <h2>The Challenge: Interface Entropy</h2>
+            <h2>Maintaining Quality Over Time</h2>
           </div>
           <div
-            id="content-interface-entropy"
+            id="content-maintaining-quality"
             class="collapsible-content collapsed"
           >
             <p class="text-lg mb-6">
@@ -1592,35 +1463,10 @@ interface DataStore {
                 maintain its integrity.
               </li>
             </ul>
-          </div>
-        </section>
-
-        <!-- Encouraging Adoption of These Principles -->
-        <section
-          id="encouraging-adoption"
-          class="p-6 md:p-10 rounded-xl"
-          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
-        >
-          <div
-            class="collapsible-header text-3xl font-bold"
-            style="color: var(--accent-blue);"
-            data-target="content-getting-others"
-          >
-            <svg
-              class="toggle-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-            <h2>Encouraging Adoption of These Principles</h2>
-          </div>
-          <div
-            id="content-getting-others"
-            class="collapsible-content collapsed"
-          >
+            
+            <h3 class="text-2xl font-semibold mt-8 mb-4" style="color: var(--accent-blue);">
+              Encouraging Adoption of These Principles
+            </h3>
             <p class="text-lg mb-6">
               The hardest part isn't knowing what good looks like - it's getting
               a team to care about it consistently.
@@ -1670,60 +1516,7 @@ interface DataStore {
           </div>
         </section>
 
-        <!-- Wisdom from the Masters -->
-        <section
-          id="wisdom-masters"
-          class="p-6 md:p-10 rounded-xl"
-          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
-        >
-          <div
-            class="collapsible-header text-3xl font-bold"
-            style="color: var(--accent-blue);"
-            data-target="content-wisdom-masters"
-          >
-            <svg
-              class="toggle-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-            <h2>Wisdom from the Masters</h2>
-          </div>
-          <div
-            id="content-wisdom-masters"
-            class="collapsible-content collapsed"
-          >
-            <ul class="space-y-4 text-lg italic" style="color: var(--text-secondary);">
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "Simplicity is prerequisite for reliability." - Edsger W.
-                Dijkstra
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "A user interface is like a joke. If you have to explain it,
-                it's not that good." - Martin LeBlanc
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "Rule of thumb for UX: More options, more problems." - Scott
-                Belsky
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "Programs must be written for people to read, and only
-                incidentally for machines to execute." - Harold Abelson
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "The function of good software is to make the complex appear to
-                be simple." - Grady Booch
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                "The most important property of a program is whether it
-                accomplishes the intention of its user." - C.A.R. Hoare
-              </li>
-            </ul>
-          </div>
-        </section>
+
 
         <!-- AI and Intelligent Interfaces -->
         <section
@@ -1755,27 +1548,7 @@ interface DataStore {
               framework applies - but with critical additions:
             </p>
 
-            <!-- New Principles for AI Systems -->
-            <div class="mb-6">
-              <div
-                class="collapsible-header sub-header"
-                data-target="sub-content-ai-principles"
-              >
-                <svg
-                  class="toggle-icon sub-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
-                <h3>New Principles for AI Systems</h3>
-              </div>
-              <div
-                id="sub-content-ai-principles"
-                class="collapsible-content collapsed"
-              >
+            <h3 class="text-2xl font-semibold mb-4" style="color: var(--accent-blue);">New Principles for AI Systems</h3>
                 <ul class="space-y-4 text-lg mb-6">
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Predictability vs. Adaptability Balance:</b> Traditional
@@ -1805,30 +1578,8 @@ interface DataStore {
                     design.
                   </li>
                 </ul>
-              </div>
-            </div>
 
-            <!-- AI-Specific Design Considerations -->
-            <div class="mb-6">
-              <div
-                class="collapsible-header sub-header"
-                data-target="sub-content-ai-considerations"
-              >
-                <svg
-                  class="toggle-icon sub-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
-                <h3>AI-Specific Design Considerations</h3>
-              </div>
-              <div
-                id="sub-content-ai-considerations"
-                class="collapsible-content collapsed"
-              >
+            <h3 class="text-2xl font-semibold mb-4 mt-8" style="color: var(--accent-blue);">AI-Specific Design Considerations</h3>
                 <ul class="space-y-4 text-lg mb-6">
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>User Control & Agency:</b> Empower users with clear
@@ -1847,30 +1598,8 @@ interface DataStore {
                     that feels creepy rather than helpful.
                   </li>
                 </ul>
-              </div>
-            </div>
 
-            <!-- Team Adoption for AI Interfaces -->
-            <div class="mb-6">
-              <div
-                class="collapsible-header sub-header"
-                data-target="sub-content-ai-adoption"
-              >
-                <svg
-                  class="toggle-icon sub-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
-                <h3>Team Adoption for AI Interfaces</h3>
-              </div>
-              <div
-                id="sub-content-ai-adoption"
-                class="collapsible-content collapsed"
-              >
+            <h3 class="text-2xl font-semibold mb-4 mt-8" style="color: var(--accent-blue);">Team Adoption for AI Interfaces</h3>
                 <ul class="space-y-4 text-lg">
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Build Trust Incrementally:</b> Start with AI augmenting
@@ -1884,8 +1613,7 @@ interface DataStore {
                     users with constant training.
                   </li>
                 </ul>
-              </div>
-            </div>
+                
             <p class="text-lg mt-6">
               The goal is to make AI feel like an invisible helping hand, subtly
               improving the experience and feeling like a natural, intuitive,
@@ -1894,53 +1622,6 @@ interface DataStore {
           </div>
         </section>
 
-        <!-- Key Takeaways -->
-        <section
-          id="key-takeaways"
-          class="p-6 md:p-10 rounded-xl"
-          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
-        >
-          <div
-            class="collapsible-header text-3xl font-bold"
-            style="color: var(--accent-blue);"
-            data-target="content-key-takeaways"
-          >
-            <svg
-              class="toggle-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-            <h2>Key Takeaways</h2>
-          </div>
-          <div id="content-key-takeaways" class="collapsible-content collapsed">
-            <ul class="space-y-4 text-lg">
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                The best interfaces disappear - you stop thinking about the
-                interface and focus on solving your actual problem. They become
-                extensions of your thought process rather than obstacles to it.
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                Steady, consistent pressure works better than passionate
-                crusades. Interface design is as much about human considerations
-                as it is about technical architecture.
-              </li>
-              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                With AI, this human element becomes even more critical - we're
-                not just designing for efficiency, but for trust, understanding,
-                and appropriate reliance on intelligent systems.
-              </li>
-            </ul>
-            <p class="text-lg mt-6">
-              Remember: Code is primarily a communication medium between humans,
-              not just instructions for machines. AI interfaces add a new
-              participant to this conversation.
-            </p>
-          </div>
-        </section>
 
         <!-- Further Reading & Resources -->
         <section
@@ -2189,6 +1870,38 @@ interface DataStore {
           updateThemeIcon();
         }
       });
+
+      // Back to top button functionality
+      const backToTopButton = document.getElementById('back-to-top');
+      
+      // Show/hide button based on scroll position
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.style.display = 'block';
+        } else {
+          backToTopButton.style.display = 'none';
+        }
+      });
+      
+      // Scroll to top when clicked
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
     </script>
+
+    <!-- Floating Back to Top Button -->
+    <button 
+      id="back-to-top" 
+      class="fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all hover:shadow-xl"
+      style="display: none; background-color: var(--accent-blue); color: white;"
+      title="Back to top"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
   </body>
 </html>
