@@ -107,8 +107,62 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
     <style>
+      :root {
+        /* Dark mode colors (default) */
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --text-primary: #f9fafb;
+        --text-secondary: #e5e7eb;
+        --text-tertiary: #9ca3af;
+        --text-link: #60a5fa;
+        --text-link-hover: #93bbfc;
+        --border-color: #374151;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --code-bg: #000000;
+        --code-text: #f3f4f6;
+        --accent-blue: #60a5fa;
+        --accent-blue-dark: #3b82f6;
+        --accent-blue-darker: #2563eb;
+        --accent-blue-light: #1e3a5f;
+        --accent-red: #f87171;
+        --accent-red-light: #2d1515;
+        --accent-green: #34d399;
+        --accent-green-light: #064e3b;
+        --accent-yellow: #fbbf24;
+        --accent-yellow-light: #3d2107;
+      }
+
+      /* Light mode colors (optional) */
+      [data-theme="light"] {
+        --bg-primary: #f3f4f6;
+        --bg-secondary: #ffffff;
+        --text-primary: #1f2937;
+        --text-secondary: #374151;
+        --text-tertiary: #6b7280;
+        --text-link: #2563eb;
+        --text-link-hover: #1d4ed8;
+        --border-color: #e5e7eb;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --code-bg: #111827;
+        --code-text: #f3f4f6;
+        --accent-blue: #3b82f6;
+        --accent-blue-dark: #2563eb;
+        --accent-blue-darker: #1d4ed8;
+        --accent-blue-light: #dbeafe;
+        --accent-red: #ef4444;
+        --accent-red-light: #fee2e2;
+        --accent-green: #10b981;
+        --accent-green-light: #d1fae5;
+        --accent-yellow: #f59e0b;
+        --accent-yellow-light: #fef3c7;
+      }
+
+      /* Apply CSS variables to body */
       body {
         font-family: "Inter", sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
       .collapsible-header {
         cursor: pointer;
@@ -121,9 +175,9 @@
       .collapsible-header.sub-header {
         font-size: 1.5rem; /* Smaller font for sub-headers */
         font-weight: 600; /* Semi-bold */
-        color: #1d4ed8; /* A slightly darker blue */
+        color: var(--accent-blue); /* Theme-aware blue */
         padding-bottom: 8px;
-        border-bottom: 1px solid #ebf4ff; /* Lighter border for sub-headers */
+        border-bottom: 1px solid var(--border-color); /* Theme-aware border */
         /* margin-bottom handled by JS and .expanded-header class */
       }
 
@@ -177,141 +231,204 @@
 
       h2 {
         font-size: 1.8em; /* Adjusted font size for h2 to ensure consistency with .collapsible-header */
-        color: #0056b3;
+        color: var(--accent-blue);
       }
       h3 {
         font-size: 1.5em; /* Adjusted font size for h3 within collapsible sections */
-        color: #1d4ed8; /* Slightly darker blue for subheadings */
+        color: var(--accent-blue); /* Theme-aware blue for subheadings */
         margin-top: 0; /* Remove default margin */
         margin-bottom: 0; /* Remove default margin */
       }
     </style>
   </head>
-  <body class="bg-gray-100 text-gray-800 antialiased leading-relaxed">
+  <body class="antialiased leading-relaxed">
     <!-- Sticky Navigation -->
     <nav
-      class="fixed left-0 top-0 w-64 h-full bg-white shadow-lg p-6 overflow-y-auto hidden lg:block"
+      class="fixed left-0 top-0 w-64 h-full shadow-lg p-6 overflow-y-auto hidden lg:block"
+      style="background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);"
     >
-      <h3 class="text-lg font-bold mb-4 text-gray-800">Table of Contents</h3>
-      <div class="mb-4 flex gap-2">
+      <h3 class="text-lg font-bold mb-4" style="color: var(--text-primary);">Table of Contents</h3>
+      <div class="mb-4 flex gap-2 flex-wrap">
         <button
           id="expand-all"
-          class="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+          class="text-sm text-white px-3 py-1 rounded transition-colors"
+          style="background-color: var(--accent-blue);"
+          onmouseover="this.style.backgroundColor='var(--accent-blue-dark)'"
+          onmouseout="this.style.backgroundColor='var(--accent-blue)'"
         >
           Expand All
         </button>
         <button
           id="collapse-all"
-          class="text-sm bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
+          class="text-sm text-white px-3 py-1 rounded transition-colors"
+          style="background-color: var(--text-secondary);"
+          onmouseover="this.style.backgroundColor='var(--text-primary)'"
+          onmouseout="this.style.backgroundColor='var(--text-secondary)'"
         >
           Collapse All
+        </button>
+        <button
+          id="theme-toggle"
+          class="text-sm px-3 py-1 rounded border"
+          style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color);"
+          title="Toggle dark mode"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <path class="moon-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" style="display: none;" />
+          </svg>
         </button>
       </div>
       <ul class="space-y-2 text-sm">
         <li>
           <a
             href="#what-makes-good"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >What Makes a Good Interface?</a
           >
         </li>
         <li>
           <a
             href="#practical-examples"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Practical Examples</a
           >
         </li>
         <li>
           <a
             href="#score-framework"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >The SCORE(D) Framework</a
           >
         </li>
         <li class="ml-4">
           <a
             href="#core-principles"
-            class="text-gray-600 hover:text-gray-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-secondary);"
+            onmouseover="this.style.color='var(--text-primary)'"
+            onmouseout="this.style.color='var(--text-secondary)'"
             >Core Principles</a
           >
         </li>
         <li class="ml-4">
           <a
             href="#advanced-qualities"
-            class="text-gray-600 hover:text-gray-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-secondary);"
+            onmouseover="this.style.color='var(--text-primary)'"
+            onmouseout="this.style.color='var(--text-secondary)'"
             >Advanced Qualities</a
           >
         </li>
         <li>
           <a
             href="#anti-patterns"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Common Anti-Patterns</a
           >
         </li>
         <li>
           <a
             href="#interface-entropy"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Interface Entropy</a
           >
         </li>
         <li>
           <a
             href="#encouraging-adoption"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Encouraging Adoption</a
           >
         </li>
         <li>
           <a
             href="#wisdom-masters"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Wisdom from the Masters</a
           >
         </li>
         <li>
           <a
             href="#ai-interfaces"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >AI and Intelligent Interfaces</a
           >
         </li>
         <li class="ml-4">
           <a
             href="#ai-principles"
-            class="text-gray-600 hover:text-gray-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-secondary);"
+            onmouseover="this.style.color='var(--text-primary)'"
+            onmouseout="this.style.color='var(--text-secondary)'"
             >AI Principles</a
           >
         </li>
         <li class="ml-4">
           <a
             href="#ai-considerations"
-            class="text-gray-600 hover:text-gray-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-secondary);"
+            onmouseover="this.style.color='var(--text-primary)'"
+            onmouseout="this.style.color='var(--text-secondary)'"
             >AI Design Considerations</a
           >
         </li>
         <li>
           <a
             href="#key-takeaways"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Key Takeaways</a
           >
         </li>
         <li>
           <a
             href="#further-reading"
-            class="text-blue-600 hover:text-blue-800 hover:underline"
+            class="hover:underline transition-colors"
+            style="color: var(--text-link);"
+            onmouseover="this.style.color='var(--text-link-hover)'"
+            onmouseout="this.style.color='var(--text-link)'"
             >Further Reading</a
           >
         </li>
       </ul>
-      <div class="mt-6 pt-6 border-t border-gray-200">
-        <p class="text-sm font-semibold text-gray-700 mb-2">Related Guides</p>
+      <div class="mt-6 pt-6 border-t" style="border-color: var(--border-color);">
+        <p class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Related Guides</p>
         <a
           href="good-code.html"
-          class="text-blue-600 hover:text-blue-800 hover:underline flex items-center"
+          class="hover:underline flex items-center transition-colors"
+          style="color: var(--text-link);"
+          onmouseover="this.style.color='var(--text-link-hover)'"
+          onmouseout="this.style.color='var(--text-link)'"
         >
           <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -324,15 +441,16 @@
     <div class="lg:ml-64 container mx-auto p-4 md:p-8">
       <header class="text-center mb-12">
         <h1
-          class="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 rounded-lg bg-white p-4 shadow-md"
+          class="text-4xl md:text-5xl font-extrabold mb-4 rounded-lg p-4"
+          style="color: var(--accent-blue-dark); background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);"
         >
           Better Programming Interface Design
         </h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
           A practical guide to building interfaces that don't suck.
         </p>
         <div class="mt-4">
-          <a href="good-code.html" class="text-blue-600 hover:text-blue-800 underline">
+          <a href="good-code.html" class="underline transition-colors" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">
             Also check out: What Makes Good Code? →
           </a>
         </div>
@@ -342,10 +460,12 @@
         <!-- What Makes a Good Programming Interface? -->
         <section
           id="what-makes-good"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-what-makes-good"
           >
             <svg
@@ -371,15 +491,16 @@
 
             <!-- Characteristics Comparison Table -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Good vs Bad Interface Characteristics
               </h3>
               <div class="overflow-x-auto">
                 <table
-                  class="w-full border-collapse bg-white rounded-lg shadow-sm"
+                  class="w-full border-collapse rounded-lg shadow-sm"
+                  style="background-color: var(--bg-secondary);"
                 >
                   <thead>
-                    <tr class="bg-blue-600 text-white">
+                    <tr style="background-color: var(--accent-blue-dark); color: white;">
                       <th class="p-4 text-left font-semibold">Aspect</th>
                       <th class="p-4 text-left font-semibold">
                         ❌ Bad Interface
@@ -390,87 +511,87 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="border-b border-gray-200">
-                      <td class="p-4 font-semibold text-gray-700">Naming</td>
-                      <td class="p-4 text-red-700">
-                        <code class="bg-red-100 px-2 py-1 rounded"
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                      <td class="p-4 font-semibold" style="color: var(--text-secondary);">Naming</td>
+                      <td class="p-4" style="color: var(--accent-red);">
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-red-light); color: var(--text-primary);"
                           >processData2Final()</code
                         ><br />
-                        <code class="bg-red-100 px-2 py-1 rounded"
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-red-light); color: var(--text-primary);"
                           >doStuff()</code
                         ><br />
-                        <code class="bg-red-100 px-2 py-1 rounded"
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-red-light); color: var(--text-primary);"
                           >tmp_calc()</code
                         >
                       </td>
-                      <td class="p-4 text-green-700">
-                        <code class="bg-green-100 px-2 py-1 rounded"
+                      <td class="p-4" style="color: var(--accent-green);">
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-green-light); color: var(--text-primary);"
                           >validateUserInput()</code
                         ><br />
-                        <code class="bg-green-100 px-2 py-1 rounded"
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-green-light); color: var(--text-primary);"
                           >calculateTotalPrice()</code
                         ><br />
-                        <code class="bg-green-100 px-2 py-1 rounded"
+                        <code class="px-2 py-1 rounded" style="background-color: var(--accent-green-light); color: var(--text-primary);"
                           >sendEmailNotification()</code
                         >
                       </td>
                     </tr>
-                    <tr class="border-b border-gray-200 bg-gray-50">
-                      <td class="p-4 font-semibold text-gray-700">
+                    <tr style="border-bottom: 1px solid var(--border-color); background-color: var(--bg-primary);">
+                      <td class="p-4 font-semibold" style="color: var(--text-secondary);">
                         Parameters
                       </td>
-                      <td class="p-4 text-red-700">
+                      <td class="p-4" style="color: var(--accent-red);">
                         Too many positional args<br />
                         Boolean flags everywhere<br />
                         Unclear parameter order
                       </td>
-                      <td class="p-4 text-green-700">
+                      <td class="p-4" style="color: var(--accent-green);">
                         Configuration objects<br />
                         Named parameters<br />
                         Sensible defaults
                       </td>
                     </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="p-4 font-semibold text-gray-700">
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                      <td class="p-4 font-semibold" style="color: var(--text-secondary);">
                         Error Handling
                       </td>
-                      <td class="p-4 text-red-700">
+                      <td class="p-4" style="color: var(--accent-red);">
                         Returns <code>null</code>, <code>-1</code>, or
                         <code>false</code><br />
                         Generic error messages<br />
                         Silent failures
                       </td>
-                      <td class="p-4 text-green-700">
+                      <td class="p-4" style="color: var(--accent-green);">
                         Throws specific exceptions<br />
                         Descriptive error messages<br />
                         Fail fast with context
                       </td>
                     </tr>
-                    <tr class="border-b border-gray-200 bg-gray-50">
-                      <td class="p-4 font-semibold text-gray-700">
+                    <tr style="border-bottom: 1px solid var(--border-color); background-color: var(--bg-primary);">
+                      <td class="p-4 font-semibold" style="color: var(--text-secondary);">
                         State Management
                       </td>
-                      <td class="p-4 text-red-700">
+                      <td class="p-4" style="color: var(--accent-red);">
                         Hidden global state<br />
                         Unexpected side effects<br />
                         Order-dependent operations
                       </td>
-                      <td class="p-4 text-green-700">
+                      <td class="p-4" style="color: var(--accent-green);">
                         Immutable where possible<br />
                         Explicit state changes<br />
                         Stateless operations
                       </td>
                     </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="p-4 font-semibold text-gray-700">
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                      <td class="p-4 font-semibold" style="color: var(--text-secondary);">
                         Consistency
                       </td>
-                      <td class="p-4 text-red-700">
+                      <td class="p-4" style="color: var(--accent-red);">
                         Mixed naming conventions<br />
                         Different patterns for similar ops<br />
                         Unpredictable behavior
                       </td>
-                      <td class="p-4 text-green-700">
+                      <td class="p-4" style="color: var(--accent-green);">
                         Uniform naming patterns<br />
                         Consistent return types<br />
                         Predictable behavior
@@ -483,13 +604,13 @@
 
             <!-- Real World Example -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Real-World Example: Date/Time APIs
               </h3>
 
               <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                  <h4 class="font-bold text-red-700 mb-2">
+                <div class="p-4 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-red);">
                     ❌ JavaScript's Old Date API
                   </h4>
                   <pre
@@ -509,9 +630,10 @@ new Date("01/15/2024"); // Depends on locale!</code></pre>
                 </div>
 
                 <div
-                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                  class="p-4 rounded-lg border-2"
+                  style="background-color: var(--accent-green-light); border-color: var(--accent-green);"
                 >
-                  <h4 class="font-bold text-green-700 mb-2">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-green);">
                     ✅ Modern Date Libraries (e.g., date-fns)
                   </h4>
                   <pre
@@ -536,35 +658,36 @@ const formatted = format(date, 'MMMM do, yyyy');
 
             <!-- The Cost of Bad Interfaces -->
             <div
-              class="mb-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-lg"
+              class="mb-8 p-6 border-2 rounded-lg"
+              style="background-color: var(--accent-yellow-light); border-color: var(--accent-yellow);"
             >
-              <h3 class="text-2xl font-semibold mb-4 text-yellow-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--accent-yellow);">
                 The Hidden Cost of Bad Interfaces
               </h3>
               <ul class="space-y-3 text-lg">
                 <li class="flex items-start">
-                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span class="mr-2" style="color: var(--accent-yellow);">⚠️</span>
                   <span
                     ><b>Developer Time:</b> Hours spent reading docs, debugging,
                     and working around quirks</span
                   >
                 </li>
                 <li class="flex items-start">
-                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span class="mr-2" style="color: var(--accent-yellow);">⚠️</span>
                   <span
                     ><b>Bug Introduction:</b> Misunderstood interfaces lead to
                     incorrect usage and subtle bugs</span
                   >
                 </li>
                 <li class="flex items-start">
-                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span class="mr-2" style="color: var(--accent-yellow);">⚠️</span>
                   <span
                     ><b>Onboarding Friction:</b> New team members struggle to
                     understand and use the codebase</span
                   >
                 </li>
                 <li class="flex items-start">
-                  <span class="text-yellow-600 mr-2">⚠️</span>
+                  <span class="mr-2" style="color: var(--accent-yellow);">⚠️</span>
                   <span
                     ><b>Technical Debt:</b> Workarounds and wrapper functions
                     accumulate over time</span
@@ -575,48 +698,52 @@ const formatted = format(date, 'MMMM do, yyyy');
 
             <!-- Interface Evolution Diagram -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 How Interfaces Evolve
               </h3>
               <div
-                class="bg-gradient-to-r from-green-100 via-yellow-100 to-red-100 p-6 rounded-lg"
+                class="p-6 rounded-lg"
+                style="background: linear-gradient(to right, var(--accent-green-light), var(--accent-yellow-light), var(--accent-red-light));"
               >
                 <div class="flex justify-between items-center text-center">
                   <div class="flex-1">
-                    <div class="text-green-700 font-bold text-xl mb-2">
+                    <div class="font-bold text-xl mb-2" style="color: var(--accent-green);">
                       Initial Design ✨
                     </div>
                     <p class="text-sm">Clean, minimal, focused</p>
                     <code
-                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      class="text-xs px-2 py-1 rounded mt-2 inline-block"
+                      style="background-color: var(--bg-secondary);"
                       >save(data)</code
                     >
                   </div>
                   <div class="text-3xl">→</div>
                   <div class="flex-1">
-                    <div class="text-yellow-700 font-bold text-xl mb-2">
+                    <div class="font-bold text-xl mb-2" style="color: var(--accent-yellow);">
                       Feature Creep 📈
                     </div>
                     <p class="text-sm">New requirements added</p>
                     <code
-                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      class="text-xs px-2 py-1 rounded mt-2 inline-block"
+                      style="background-color: var(--bg-secondary);"
                       >save(data, options, callback)</code
                     >
                   </div>
                   <div class="text-3xl">→</div>
                   <div class="flex-1">
-                    <div class="text-red-700 font-bold text-xl mb-2">
+                    <div class="font-bold text-xl mb-2" style="color: var(--accent-red);">
                       Interface Decay 💔
                     </div>
                     <p class="text-sm">Inconsistent, complex</p>
                     <code
-                      class="text-xs bg-white px-2 py-1 rounded mt-2 inline-block"
+                      class="text-xs px-2 py-1 rounded mt-2 inline-block"
+                      style="background-color: var(--bg-secondary);"
                       >save(data, opts, cb, meta, flags)</code
                     >
                   </div>
                 </div>
               </div>
-              <p class="text-center mt-4 text-gray-600 italic">
+              <p class="text-center mt-4 italic" style="color: var(--text-tertiary);">
                 Without careful stewardship, even the best interfaces degrade
                 over time
               </p>
@@ -627,10 +754,12 @@ const formatted = format(date, 'MMMM do, yyyy');
         <!-- Practical Examples -->
         <section
           id="practical-examples"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-practical-examples"
           >
             <svg
@@ -655,13 +784,13 @@ const formatted = format(date, 'MMMM do, yyyy');
 
             <!-- Example 1: Method Parameters -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Example 1: Method Parameters
               </h3>
 
               <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                <div class="p-4 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-red);">❌ Poor Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-javascript">// JavaScript
@@ -677,9 +806,10 @@ createUser("John", "john@example.com", true, true,
                 </div>
 
                 <div
-                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                  class="p-4 rounded-lg border-2"
+                  style="background-color: var(--accent-green-light); border-color: var(--accent-green);"
                 >
-                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <h4 class="font-bold mb-2" style="color: var(--accent-green);">✅ Good Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-javascript">// JavaScript
@@ -702,13 +832,13 @@ createUser({
 
             <!-- Example 2: Error Handling -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Example 2: Error Handling
               </h3>
 
               <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                <div class="p-4 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-red);">❌ Poor Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-python">// Python
@@ -726,9 +856,10 @@ def process_data(data):
                 </div>
 
                 <div
-                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                  class="p-4 rounded-lg border-2"
+                  style="background-color: var(--accent-green-light); border-color: var(--accent-green);"
                 >
-                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <h4 class="font-bold mb-2" style="color: var(--accent-green);">✅ Good Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-python">// Python
@@ -756,13 +887,13 @@ def process_data(data):
 
             <!-- Example 3: API Consistency -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Example 3: API Consistency
               </h3>
 
               <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                <div class="p-4 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-red);">❌ Poor Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-java">// Java - Inconsistent naming and behavior
@@ -776,9 +907,10 @@ public class FileManager {
                 </div>
 
                 <div
-                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                  class="p-4 rounded-lg border-2"
+                  style="background-color: var(--accent-green-light); border-color: var(--accent-green);"
                 >
-                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <h4 class="font-bold mb-2" style="color: var(--accent-green);">✅ Good Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-java">// Java - Consistent and predictable
@@ -798,13 +930,13 @@ public class FileManager {
 
             <!-- Example 4: Builder Pattern -->
             <div class="mb-8">
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+              <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-primary);">
                 Example 4: Complex Object Creation
               </h3>
 
               <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                  <h4 class="font-bold text-red-700 mb-2">❌ Poor Design</h4>
+                <div class="p-4 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
+                  <h4 class="font-bold mb-2" style="color: var(--accent-red);">❌ Poor Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-javascript">// JavaScript - Telescoping constructor antipattern
@@ -825,9 +957,10 @@ const client = new HttpClient(
                 </div>
 
                 <div
-                  class="bg-green-50 p-4 rounded-lg border-2 border-green-200"
+                  class="p-4 rounded-lg border-2"
+                  style="background-color: var(--accent-green-light); border-color: var(--accent-green);"
                 >
-                  <h4 class="font-bold text-green-700 mb-2">✅ Good Design</h4>
+                  <h4 class="font-bold mb-2" style="color: var(--accent-green);">✅ Good Design</h4>
                   <pre
                     class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"
                   ><code class="language-javascript">// JavaScript - Fluent builder pattern
@@ -862,8 +995,8 @@ const client = new HttpClient("https://api.example.com")
               </div>
             </div>
 
-            <div class="mt-8 p-6 bg-blue-50 rounded-lg">
-              <h3 class="text-xl font-semibold mb-3 text-blue-800">
+            <div class="mt-8 p-6 rounded-lg" style="background-color: var(--accent-blue-light);">
+              <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-blue);">
                 Key Takeaways from Examples:
               </h3>
               <ul class="space-y-2 text-lg">
@@ -888,10 +1021,12 @@ const client = new HttpClient("https://api.example.com")
         <!-- The SCORE Framework -->
         <section
           id="score-framework"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-score-framework"
           >
             <svg
@@ -911,22 +1046,22 @@ const client = new HttpClient("https://api.example.com")
           >
             <p class="text-lg mb-6">Winning interfaces need to <b>SCORE</b>:</p>
             <ul class="space-y-4 text-lg">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Simple:</b> Minimize choices to reduce cognitive load.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Clarity:</b> Use intuitive names, hide complexity, and avoid
                 side effects.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Operational:</b> It must function reliably and solve the
                 intended problem.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Robust:</b> Handles edge cases and remains stable under
                 stress.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Extensible:</b> Designed for reuse through loose coupling and
                 modularity.
               </li>
@@ -957,14 +1092,14 @@ const client = new HttpClient("https://api.example.com")
                 class="collapsible-content collapsed"
               >
                 <ul class="space-y-4 text-lg">
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Clarity over cleverness:</b> The interface should reveal
                     its purpose immediately. Method names should say what they
                     do, parameters should be obvious, and return values
                     predictable. A programmer shouldn't need to guess or consult
                     documentation for basic usage.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Minimal surface area:</b> Every public method, every
                     parameter, every configuration option is a
                     <b>complexity burden to support</b>. Start small. You can
@@ -972,19 +1107,19 @@ const client = new HttpClient("https://api.example.com")
                     that does one thing well beats a Swiss Army knife that does
                     everything poorly.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Fail fast and clearly:</b> When something goes wrong –
                     and it will – the interface should tell you immediately and
                     precisely what happened. Cryptic errors or silent failures
                     are the enemy of productivity.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Reasonable defaults:</b> The common case should be easy,
                     requiring minimal setup. Advanced users can always override
                     defaults, but beginners shouldn't need to understand every
                     option just to get started.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Composability:</b> Good interfaces play well with others.
                     They accept and return standard types, follow common
                     patterns, and don't force you into their particular
@@ -1016,48 +1151,48 @@ const client = new HttpClient("https://api.example.com")
                 class="collapsible-content collapsed"
               >
                 <ul class="space-y-4 text-lg">
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Testability:</b> A good interface should be easy to test.
                     Methods and components can be isolated and verified without
                     excessive setup or reliance on external systems. Testability
                     is a direct consequence of good design principles like loose
                     coupling and clear contracts.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Discoverability:</b> A truly great interface has elements
                     of discoverability built into its design. This means
                     intelligent IDE auto-completion, consistent naming patterns,
                     and logical grouping that helps developers intuit how to use
                     it even before consulting docs.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Error Feedback Quality:</b> Error messages and exceptions
                     should be precise, actionable, and help the developer
                     understand why something went wrong and how to fix it,
                     rather than just stating that it went wrong. Poor error
                     messages can negate all other good design efforts.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Performance Transparency:</b> Interfaces should be honest
                     about their computational costs. A method that looks simple
                     but does O(n²) work under the hood is a trap. Users need to
                     understand the performance implications of their choices,
                     especially at scale.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Context Sensitivity:</b> An interface for junior
                     developers should be different from one for experts. The
                     same underlying functionality might need different facades
                     for different audiences.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Idempotence (where applicable):</b> For operations that
                     modify state, particularly in APIs, idempotence is valuable.
                     An idempotent operation produces the same result whether
                     it's called once or multiple times, simplifying retry logic
                     and making systems more resilient.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Versioning Strategy:</b> Good interfaces plan for
                     evolution from day one. How do you deprecate? How do you
                     introduce breaking changes? The best interfaces make it easy
@@ -1072,10 +1207,12 @@ const client = new HttpClient("https://api.example.com")
         <!-- Common Anti-Patterns -->
         <section
           id="anti-patterns"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-anti-patterns"
           >
             <svg
@@ -1097,9 +1234,10 @@ const client = new HttpClient("https://api.example.com")
 
             <!-- Anti-Pattern 1: Boolean Blindness -->
             <div
-              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+              class="mb-8 p-6 rounded-lg border-l-4"
+              style="background-color: var(--accent-red-light); border-left-color: var(--accent-red);"
             >
-              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+              <h3 class="text-2xl font-semibold mb-3" style="color: var(--accent-red);">
                 1. Boolean Blindness
               </h3>
               <p class="text-lg mb-4">
@@ -1107,9 +1245,9 @@ const client = new HttpClient("https://api.example.com")
                 unreadable.
               </p>
 
-              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+              <div class="p-4 rounded-lg mb-4" style="background-color: var(--code-bg); color: var(--code-text);">
                 <pre
-                  class="text-sm"
+                  class="text-sm overflow-x-auto"
                 ><code class="language-javascript">// ❌ What do these booleans mean?
 processOrder(order, true, false, true, false);
 
@@ -1130,7 +1268,7 @@ processOrder(order, true, false, true, false);
               <p class="text-lg mb-2">
                 <b>Fix:</b> Use an options object or enums
               </p>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+              <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
                 ><code class="language-javascript">// ✅ Self-documenting
@@ -1145,18 +1283,19 @@ processOrder(order, {
 
             <!-- Anti-Pattern 2: Stringly Typed -->
             <div
-              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+              class="mb-8 p-6 rounded-lg border-l-4"
+              style="background-color: var(--accent-red-light); border-left-color: var(--accent-red);"
             >
-              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+              <h3 class="text-2xl font-semibold mb-3" style="color: var(--accent-red);">
                 2. Stringly Typed Programming
               </h3>
               <p class="text-lg mb-4">
                 Using strings where enums or specific types would be clearer.
               </p>
 
-              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+              <div class="p-4 rounded-lg mb-4" style="background-color: var(--code-bg); color: var(--code-text);">
                 <pre
-                  class="text-sm"
+                  class="text-sm overflow-x-auto"
                 ><code class="language-javascript">// ❌ Prone to typos and no IDE help
 function setUserStatus(userId, status) {
   // status could be "active", "Active", "ACTIVE", "enabled"?
@@ -1174,7 +1313,7 @@ setUserStatus(123, "actve"); // Typo! But no compile error</code></pre>
               </ul>
 
               <p class="text-lg mb-2"><b>Fix:</b> Use enums or constants</p>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+              <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
                 ><code class="language-javascript">// ✅ Type-safe with clear options
@@ -1194,18 +1333,19 @@ setUserStatus(123, UserStatus.ACTIVE);</code></pre>
 
             <!-- Anti-Pattern 3: God Object -->
             <div
-              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+              class="mb-8 p-6 rounded-lg border-l-4"
+              style="background-color: var(--accent-red-light); border-left-color: var(--accent-red);"
             >
-              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+              <h3 class="text-2xl font-semibold mb-3" style="color: var(--accent-red);">
                 3. God Object / Kitchen Sink
               </h3>
               <p class="text-lg mb-4">
                 Creating massive interfaces that do everything.
               </p>
 
-              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+              <div class="p-4 rounded-lg mb-4" style="background-color: var(--code-bg); color: var(--code-text);">
                 <pre
-                  class="text-sm"
+                  class="text-sm overflow-x-auto"
                 ><code class="language-javascript">// ❌ A class that does way too much
 class UserManager {
   createUser() { }
@@ -1237,7 +1377,7 @@ class UserManager {
               <p class="text-lg mb-2">
                 <b>Fix:</b> Split into focused interfaces
               </p>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+              <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
                 ><code class="language-javascript">// ✅ Separate concerns
@@ -1261,18 +1401,19 @@ class PasswordService {
 
             <!-- Anti-Pattern 4: Inconsistent Naming -->
             <div
-              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+              class="mb-8 p-6 rounded-lg border-l-4"
+              style="background-color: var(--accent-red-light); border-left-color: var(--accent-red);"
             >
-              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+              <h3 class="text-2xl font-semibold mb-3" style="color: var(--accent-red);">
                 4. Inconsistent Naming Conventions
               </h3>
               <p class="text-lg mb-4">
                 Mixing different naming patterns within the same interface.
               </p>
 
-              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+              <div class="p-4 rounded-lg mb-4" style="background-color: var(--code-bg); color: var(--code-text);">
                 <pre
-                  class="text-sm"
+                  class="text-sm overflow-x-auto"
                 ><code class="language-javascript">// ❌ Pick a style and stick to it!
 class DataProcessor {
   getData() { }          // verb + noun
@@ -1295,7 +1436,7 @@ class DataProcessor {
               <p class="text-lg mb-2">
                 <b>Fix:</b> Establish and follow conventions
               </p>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+              <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
                 ><code class="language-javascript">// ✅ Consistent pattern
@@ -1312,18 +1453,19 @@ class DataProcessor {
 
             <!-- Anti-Pattern 5: Leaky Abstractions -->
             <div
-              class="mb-8 p-6 bg-red-50 rounded-lg border-l-4 border-red-500"
+              class="mb-8 p-6 rounded-lg border-l-4"
+              style="background-color: var(--accent-red-light); border-left-color: var(--accent-red);"
             >
-              <h3 class="text-2xl font-semibold mb-3 text-red-800">
+              <h3 class="text-2xl font-semibold mb-3" style="color: var(--accent-red);">
                 5. Leaky Abstractions
               </h3>
               <p class="text-lg mb-4">
                 Exposing implementation details through the interface.
               </p>
 
-              <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+              <div class="p-4 rounded-lg mb-4" style="background-color: var(--code-bg); color: var(--code-text);">
                 <pre
-                  class="text-sm"
+                  class="text-sm overflow-x-auto"
                 ><code class="language-javascript">// ❌ Implementation details leaked
 class Database {
   executeMySQLQuery(query: string) { }
@@ -1345,7 +1487,7 @@ class Database {
               <p class="text-lg mb-2">
                 <b>Fix:</b> Abstract the implementation
               </p>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+              <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
                 ><code class="language-javascript">// ✅ Implementation hidden
@@ -1362,9 +1504,9 @@ interface DataStore {
 
             <!-- Summary Box -->
             <div
-              class="mt-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200"
+              class="mt-8 p-6 rounded-lg border-2" style="background-color: var(--accent-blue-light); border-color: var(--accent-blue);"
             >
-              <h3 class="text-xl font-semibold mb-3 text-blue-800">
+              <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-blue-dark);">
                 Remember: Good Interfaces Are Discovered, Not Designed
               </h3>
               <p class="text-lg mb-3">
@@ -1391,10 +1533,12 @@ interface DataStore {
         <!-- The Challenge: Interface Entropy -->
         <section
           id="interface-entropy"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-interface-entropy"
           >
             <svg
@@ -1418,30 +1562,30 @@ interface DataStore {
               time. This "interface entropy" manifests through:
             </p>
             <ul class="space-y-4 text-lg">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Feature Creep:</b> Each new requirement often leads to new
                 methods, parameters, or configuration options, gradually
                 expanding the interface's surface area beyond its original
                 minimalist intent.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Ad-hoc Additions:</b> Without strict adherence to original
                 design principles, new functionalities might be tacked on in
                 inconsistent ways, breaking established patterns and naming
                 conventions.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Organizational Changes:</b> Different teams or developers
                 contributing over time might introduce varying styles or
                 interpretations of the interface's purpose, leading to
                 fragmentation.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Technical Debt:</b> Quick fixes or compromises made under
                 pressure can accumulate, making the interface harder to
                 understand, use, and extend cleanly.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Loss of Original Intent:</b> As developers who designed the
                 initial interface move on, the nuanced understanding of why
                 certain decisions were made can be lost, making it harder to
@@ -1454,10 +1598,12 @@ interface DataStore {
         <!-- Encouraging Adoption of These Principles -->
         <section
           id="encouraging-adoption"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-getting-others"
           >
             <svg
@@ -1480,7 +1626,7 @@ interface DataStore {
               a team to care about it consistently.
             </p>
             <ul class="space-y-4 text-lg">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Start with pain:</b> People don't follow principles because
                 they sound nice; they follow them because they've been burned.
                 When someone spends three hours debugging a cryptic error
@@ -1488,7 +1634,7 @@ interface DataStore {
                 become believers. Don't lead with theory - lead with "remember
                 last month when..."
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Make the right thing easy:</b> Build templates, linters, and
                 code generation tools that naturally produce good interfaces. If
                 creating a well-designed interface takes the same effort as
@@ -1496,25 +1642,25 @@ interface DataStore {
                 if good design requires heroic effort, it won't happen under
                 pressure.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Code review as teaching:</b> Don't just catch bugs - catch
                 interface design issues. When you see a method with five boolean
                 parameters, stop and discuss it. When error messages are vague,
                 make that a blocking comment. Use reviews to reinforce
                 principles in context, not as abstract lectures.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Lead by example, quietly:</b> Build one really good interface
                 that others interact with daily. Let them experience the
                 difference. When they say "this is so easy to use," that's your
                 opening to explain why. Show, don't tell.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Pick your battles:</b> You can't fix everything at once.
                 Choose one principle - maybe "clear error messages" - and focus
                 the whole team on that for a few months. Success breeds success.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Document the "why" relentlessly:</b> When you make interface
                 decisions, write down the reasoning. Future developers
                 (including yourself) will thank you when they're tempted to
@@ -1527,10 +1673,12 @@ interface DataStore {
         <!-- Wisdom from the Masters -->
         <section
           id="wisdom-masters"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-wisdom-masters"
           >
             <svg
@@ -1548,28 +1696,28 @@ interface DataStore {
             id="content-wisdom-masters"
             class="collapsible-content collapsed"
           >
-            <ul class="space-y-4 text-lg italic text-gray-700">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+            <ul class="space-y-4 text-lg italic" style="color: var(--text-secondary);">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "Simplicity is prerequisite for reliability." - Edsger W.
                 Dijkstra
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "A user interface is like a joke. If you have to explain it,
                 it's not that good." - Martin LeBlanc
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "Rule of thumb for UX: More options, more problems." - Scott
                 Belsky
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "Programs must be written for people to read, and only
                 incidentally for machines to execute." - Harold Abelson
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "The function of good software is to make the complex appear to
                 be simple." - Grady Booch
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 "The most important property of a program is whether it
                 accomplishes the intention of its user." - C.A.R. Hoare
               </li>
@@ -1580,10 +1728,12 @@ interface DataStore {
         <!-- AI and Intelligent Interfaces -->
         <section
           id="ai-interfaces"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-ai-interfaces"
           >
             <svg
@@ -1627,29 +1777,29 @@ interface DataStore {
                 class="collapsible-content collapsed"
               >
                 <ul class="space-y-4 text-lg mb-6">
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Predictability vs. Adaptability Balance:</b> Traditional
                     interfaces are deterministic; AI interfaces adapt and learn.
                     The challenge is providing enough consistency for intuition
                     while allowing beneficial adaptation.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Explainability as Core Interface Element:</b> "Why did
                     you recommend this?" is as important as "What did you
                     recommend?" The interface must make AI reasoning accessible
                     without overwhelming users.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Graceful Degradation of Intelligence:</b> When AI fails,
                     the interface needs elegant fallback patterns. Users should
                     never feel trapped by AI decisions.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Trust Calibration:</b> AI can be "wrong but confident."
                     The interface must help users develop appropriate trust –
                     neither blind faith nor complete skepticism.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>New Error States:</b> "I don't know" and "I'm not
                     confident" are valid interface states requiring thoughtful
                     design.
@@ -1680,18 +1830,18 @@ interface DataStore {
                 class="collapsible-content collapsed"
               >
                 <ul class="space-y-4 text-lg mb-6">
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>User Control & Agency:</b> Empower users with clear
                     control over AI suggestions, easy override mechanisms, and
                     transparent ways to manage unpredictability. Ensure AI
                     assists, rather than replaces, human judgment.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Transparency:</b> Explain why an AI system is making a
                     particular decision or recommendation without overwhelming
                     users with technical complexity.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Privacy and Data Mindfulness:</b> Be conscious of data
                     collected about users and avoid invasive personalization
                     that feels creepy rather than helpful.
@@ -1722,13 +1872,13 @@ interface DataStore {
                 class="collapsible-content collapsed"
               >
                 <ul class="space-y-4 text-lg">
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Build Trust Incrementally:</b> Start with AI augmenting
                     tasks, not fully automating them. Prioritize user control
                     with clear override paths to build trust and appropriate
                     reliance.
                   </li>
-                  <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+                  <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Continuous Feedback Loops:</b> Design ongoing feedback
                     mechanisms that improve AI performance without overburdening
                     users with constant training.
@@ -1747,10 +1897,12 @@ interface DataStore {
         <!-- Key Takeaways -->
         <section
           id="key-takeaways"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-key-takeaways"
           >
             <svg
@@ -1766,17 +1918,17 @@ interface DataStore {
           </div>
           <div id="content-key-takeaways" class="collapsible-content collapsed">
             <ul class="space-y-4 text-lg">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 The best interfaces disappear - you stop thinking about the
                 interface and focus on solving your actual problem. They become
                 extensions of your thought process rather than obstacles to it.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 Steady, consistent pressure works better than passionate
                 crusades. Interface design is as much about human considerations
                 as it is about technical architecture.
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 With AI, this human element becomes even more critical - we're
                 not just designing for efficiency, but for trust, understanding,
                 and appropriate reliance on intelligent systems.
@@ -1793,10 +1945,12 @@ interface DataStore {
         <!-- Further Reading & Resources -->
         <section
           id="further-reading"
-          class="bg-white p-6 md:p-10 rounded-xl shadow-lg"
+          class="p-6 md:p-10 rounded-xl"
+          style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);"
         >
           <div
-            class="collapsible-header text-3xl font-bold text-blue-600"
+            class="collapsible-header text-3xl font-bold"
+            style="color: var(--accent-blue);"
             data-target="content-further-reading"
           >
             <svg
@@ -1815,33 +1969,33 @@ interface DataStore {
             class="collapsible-content collapsed"
           >
             <ul class="space-y-4 text-lg">
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://www.martinfowler.com/ieeeSoftware/designGuideline.pdf"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
                   >Design Guidelines</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   A comprehensive article by Martin Fowler outlining principles
                   and heuristics for good software design, emphasizing
                   maintainability and clarity.
                 </p>
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://www.developerdotstar.com/mag/articles/read_princprog.html"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
                   >Principled Programming</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   An essay by Daniel Read, outlining core principles for
                   software developers focusing on craftsmanship and code
                   quality.
                 </p>
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://www.codementor.io/@dheeraj_jha/what-are-the-qualities-of-a-good-application-programming-interface-function-22j2prnyoe"
                   target="_blank"
@@ -1849,43 +2003,43 @@ interface DataStore {
                   >Qualities of a Good Application Programming Interface
                   (API)</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   A practical guide discussing essential characteristics that
                   define a well-designed and usable API, including simplicity,
                   consistency, and robustness.
                 </p>
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/32713.pdf"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
                   >How to Design a Good API and Why it Matters</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   Taken from a Google tech talk by Joshua Bloch.
                 </p>
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://www.developerdotstar.com/mag/articles/pugh_interface_oriented.html"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
                   >Interface Oriented Design</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   Ken Pugh's article advocating for prioritizing interfaces over
                   inheritance for flexible and maintainable software designs.
                 </p>
               </li>
-              <li class="p-3 bg-blue-50 rounded-lg shadow-sm">
+              <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <a
                   href="https://uxdesign.cc/ai-ux-design-for-intelligent-interfaces-bc966e96107d"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
                   >AI UX: Design for Intelligent Interfaces</a
                 >
-                <p class="text-gray-700 text-base">
+                <p class="text-base" style="color: var(--text-secondary);">
                   An article discussing the unique user experience design
                   challenges and considerations for interfaces powered by
                   Artificial Intelligence.
@@ -1977,6 +2131,63 @@ interface DataStore {
             }
           });
         });
+      });
+
+      // Dark mode functionality
+      function initializeTheme() {
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        
+        // Only set data-theme if user explicitly chose light mode
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+        // Otherwise, use default (dark mode from CSS)
+        
+        updateThemeIcon();
+      }
+
+      function updateThemeIcon() {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        
+        if (isLight) {
+          sunIcon.style.display = 'block';
+          moonIcon.style.display = 'none';
+        } else {
+          sunIcon.style.display = 'none';
+          moonIcon.style.display = 'block';
+        }
+      }
+
+      // Initialize theme on page load
+      initializeTheme();
+
+      // Theme toggle button
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        
+        if (isLight) {
+          // Switch to dark (remove the attribute to use default dark)
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('theme');
+        } else {
+          // Switch to light
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+        
+        updateThemeIcon();
+      });
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        // Only update if user hasn't manually set a preference
+        if (!localStorage.getItem('theme')) {
+          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+          updateThemeIcon();
+        }
       });
     </script>
   </body>
