@@ -619,8 +619,8 @@ const formatted = format(date, 'MMMM do, yyyy');
                 Practical Examples: Before & After
               </h2>
               <p class="text-lg mb-6">
-                Let's look at real code examples that demonstrate the difference
-                between poor and excellent interface design.
+                Let's get our hands dirty with some real code. You'll see exactly
+                what separates the interfaces people love from the ones they curse at.
               </p>
 
             <!-- Example 1: Method Parameters -->
@@ -886,7 +886,7 @@ const client = new HttpClient("https://api.example.com")
             id="content-score-framework"
             class="collapsible-content collapsed"
           >
-            <p class="text-lg mb-6">Winning interfaces need to <b>SCORE</b>:</p>
+            <p class="text-lg mb-6">Want interfaces that developers actually enjoy using? Make them <b>SCORE</b>:</p>
             <ul class="space-y-4 text-lg">
               <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Simple:</b> Minimize choices to reduce cognitive load.
@@ -909,7 +909,7 @@ const client = new HttpClient("https://api.example.com")
               </li>
             </ul>
             <p class="text-lg mt-6">
-              Ideally, it's also <b>Documented</b>—thus SCORED.
+              And if you add <b>Documentation</b>, you get SCORED.
             </p>
 
             <!-- Core Principles (Moved as sub-section) -->
@@ -935,11 +935,10 @@ const client = new HttpClient("https://api.example.com")
               >
                 <ul class="space-y-4 text-lg">
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                    <b>Clarity over cleverness:</b> The interface should reveal
-                    its purpose immediately. Method names should say what they
-                    do, parameters should be obvious, and return values
-                    predictable. A programmer shouldn't need to guess or consult
-                    documentation for basic usage.
+                    <b>Clarity over cleverness:</b> Your code should be obvious.
+                    Method names that actually say what they do. Parameters that
+                    make sense. No guessing games, no diving into docs just to
+                    figure out the basics.
                   </li>
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Minimal surface area:</b> Every public method, every
@@ -950,10 +949,10 @@ const client = new HttpClient("https://api.example.com")
                     everything poorly.
                   </li>
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                    <b>Fail fast and clearly:</b> When something goes wrong –
-                    and it will – the interface should tell you immediately and
-                    precisely what happened. Cryptic errors or silent failures
-                    are the enemy of productivity.
+                    <b>Fail fast and clearly:</b> When things break (and they
+                    will), tell me right away and tell me exactly what went
+                    wrong. None of this cryptic error nonsense or pretending
+                    everything's fine when it's not.
                   </li>
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                     <b>Reasonable defaults:</b> The common case should be easy,
@@ -962,10 +961,9 @@ const client = new HttpClient("https://api.example.com")
                     option just to get started.
                   </li>
                   <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
-                    <b>Composability:</b> Good interfaces play well with others.
-                    They accept and return standard types, follow common
-                    patterns, and don't force you into their particular
-                    worldview.
+                    <b>Composability:</b> Your interface should play nice with
+                    others. Use standard types, follow familiar patterns, and
+                    don't make me learn your special way of doing things.
                   </li>
                 </ul>
               </div>
@@ -1099,8 +1097,9 @@ const client = new HttpClient("https://api.example.com")
           </div>
           <div id="content-anti-patterns" class="collapsible-content collapsed">
             <p class="text-lg mb-6">
-              Learn to recognize and avoid these common interface design
-              mistakes that plague codebases worldwide.
+              We've all seen these disasters. Hell, we've probably written
+              some of them. Here's how to spot (and fix) the most common
+              interface mistakes.
             </p>
 
             <!-- Anti-Pattern 1: Boolean Blindness -->
@@ -1126,7 +1125,7 @@ processOrder(order, true, false, true, false);
 // Or: (isPriority, skipValidation, dryRun, verbose)?</code></pre>
               </div>
 
-              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <p class="text-lg mb-2"><b>Why this sucks:</b></p>
               <ul class="list-disc list-inside space-y-1 mb-4">
                 <li>
                   Impossible to understand without checking the function
@@ -1137,7 +1136,7 @@ processOrder(order, true, false, true, false);
               </ul>
 
               <p class="text-lg mb-2">
-                <b>Fix:</b> Use an options object or enums
+                <b>Better approach:</b> Use an options object or enums
               </p>
               <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
@@ -1175,7 +1174,7 @@ function setUserStatus(userId, status) {
 setUserStatus(123, "actve"); // Typo! But no compile error</code></pre>
               </div>
 
-              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <p class="text-lg mb-2"><b>Why this sucks:</b></p>
               <ul class="list-disc list-inside space-y-1 mb-4">
                 <li>No compile-time checking</li>
                 <li>Typos become runtime errors</li>
@@ -1183,7 +1182,7 @@ setUserStatus(123, "actve"); // Typo! But no compile error</code></pre>
                 <li>Unclear what values are valid</li>
               </ul>
 
-              <p class="text-lg mb-2"><b>Fix:</b> Use enums or constants</p>
+              <p class="text-lg mb-2"><b>Better approach:</b> Use enums or constants</p>
               <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
                   class="text-sm"
@@ -1237,7 +1236,7 @@ class UserManager {
 }</code></pre>
               </div>
 
-              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <p class="text-lg mb-2"><b>Why this sucks:</b></p>
               <ul class="list-disc list-inside space-y-1 mb-4">
                 <li>Violates Single Responsibility Principle</li>
                 <li>Hard to test and maintain</li>
@@ -1246,7 +1245,7 @@ class UserManager {
               </ul>
 
               <p class="text-lg mb-2">
-                <b>Fix:</b> Split into focused interfaces
+                <b>Better approach:</b> Split into focused interfaces
               </p>
               <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
@@ -1296,7 +1295,7 @@ class DataProcessor {
 }</code></pre>
               </div>
 
-              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <p class="text-lg mb-2"><b>Why this sucks:</b></p>
               <ul class="list-disc list-inside space-y-1 mb-4">
                 <li>Cognitive overhead switching between styles</li>
                 <li>Hard to predict method names</li>
@@ -1305,7 +1304,7 @@ class DataProcessor {
               </ul>
 
               <p class="text-lg mb-2">
-                <b>Fix:</b> Establish and follow conventions
+                <b>Better approach:</b> Pick a style and stick with it
               </p>
               <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
@@ -1348,7 +1347,7 @@ class Database {
 // User needs to know we use MySQL, MongoDB, Redis, etc.</code></pre>
               </div>
 
-              <p class="text-lg mb-2"><b>Why it's bad:</b></p>
+              <p class="text-lg mb-2"><b>Why this sucks:</b></p>
               <ul class="list-disc list-inside space-y-1 mb-4">
                 <li>Can't change implementation without breaking clients</li>
                 <li>Exposes unnecessary complexity</li>
@@ -1356,7 +1355,7 @@ class Database {
               </ul>
 
               <p class="text-lg mb-2">
-                <b>Fix:</b> Abstract the implementation
+                <b>Better approach:</b> Hide the messy details
               </p>
               <div class="p-4 rounded-lg border" style="background-color: var(--accent-green-light); border-color: var(--accent-green);">
                 <pre
@@ -1428,9 +1427,8 @@ interface DataStore {
             class="collapsible-content collapsed"
           >
             <p class="text-lg mb-6">
-              Even the most well-designed programming interfaces have a natural
-              tendency to degrade in clarity, simplicity, and consistency over
-              time. This "interface entropy" manifests through:
+              Even the best interfaces tend to get messy over time. This happens
+              because:
             </p>
             <ul class="space-y-4 text-lg">
               <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
@@ -1458,9 +1456,8 @@ interface DataStore {
               </li>
               <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
                 <b>Loss of Original Intent:</b> As developers who designed the
-                initial interface move on, the nuanced understanding of why
-                certain decisions were made can be lost, making it harder to
-                maintain its integrity.
+                initial interface move on, nobody remembers why things were
+                built that way, and it gets harder to keep things clean.
               </li>
             </ul>
             
@@ -1468,8 +1465,8 @@ interface DataStore {
               Encouraging Adoption of These Principles
             </h3>
             <p class="text-lg mb-6">
-              The hardest part isn't knowing what good looks like - it's getting
-              a team to care about it consistently.
+              The tough part? Getting your team to actually care about this
+              stuff day after day.
             </p>
             <ul class="space-y-4 text-lg">
               <li class="p-3 rounded-lg shadow-sm" style="background-color: var(--accent-blue-light); color: var(--text-primary);">
@@ -1542,10 +1539,9 @@ interface DataStore {
           </div>
           <div id="content-ai-interfaces" class="collapsible-content collapsed">
             <p class="text-lg mb-6">
-              AI interfaces present unique challenges that amplify traditional
-              interface design principles while introducing entirely new
-              considerations. AI interfaces are still interfaces - the SCORE
-              framework applies - but with critical additions:
+              AI brings its own weird problems on top of the usual interface
+              headaches. Sure, the SCORE framework still applies, but you need
+              some extra tricks up your sleeve:
             </p>
 
             <h3 class="text-2xl font-semibold mb-4" style="color: var(--accent-blue);">New Principles for AI Systems</h3>
