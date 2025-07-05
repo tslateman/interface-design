@@ -113,7 +113,7 @@
         --bg-secondary: #1f2937;
         --text-primary: #f9fafb;
         --text-secondary: #e5e7eb;
-        --text-tertiary: #9ca3af;
+        --text-tertiary: #d1d5db; /* Improved contrast from #9ca3af */
         --text-link: #60a5fa;
         --text-link-hover: #93bbfc;
         --border-color: #374151;
@@ -239,38 +239,149 @@
         margin-top: 0; /* Remove default margin */
         margin-bottom: 0; /* Remove default margin */
       }
+      
+      /* Accessibility improvements */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--accent-blue);
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        border-radius: 0 0 4px 0;
+      }
+      
+      .skip-link:focus {
+        top: 0;
+      }
+      
+      /* Focus styles for better visibility */
+      *:focus {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
+      }
+      
+      button:focus,
+      a:focus {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
+      }
+      
+      /* Button hover/focus states */
+      .btn-expand-all {
+        background-color: var(--accent-blue);
+        color: white;
+      }
+      
+      .btn-expand-all:hover,
+      .btn-expand-all:focus {
+        background-color: var(--accent-blue-dark);
+      }
+      
+      .btn-collapse-all {
+        background-color: #6b7280;
+        color: white;
+      }
+      
+      .btn-collapse-all:hover,
+      .btn-collapse-all:focus {
+        background-color: #4b5563;
+      }
+      
+      /* Navigation link states */
+      .nav-link {
+        display: block;
+        padding: 12px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        background-color: var(--bg-primary);
+        color: var(--text-link);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+      }
+      
+      .nav-link:hover,
+      .nav-link:focus {
+        background-color: var(--accent-blue-light);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px var(--shadow-color);
+      }
+      
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      
+      /* High contrast mode support */
+      @media (prefers-contrast: high) {
+        :root {
+          --accent-blue: #0066cc;
+          --accent-blue-dark: #0052a3;
+          --text-link: #0066cc;
+        }
+      }
+      
+      /* Ensure touch targets are at least 44x44 pixels */
+      button,
+      a {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Screen reader only content */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
     </style>
   </head>
   <body class="antialiased leading-relaxed">
+    <!-- Skip to main content link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="max-w-4xl mx-auto p-4 md:p-8">
       <header class="mb-12">
         <!-- Control buttons -->
         <div class="flex justify-end mb-4 gap-2">
           <button
             id="expand-all"
-            class="text-sm text-white px-3 py-1 rounded transition-colors"
-            style="background-color: var(--accent-blue);"
-            onmouseover="this.style.backgroundColor='var(--accent-blue-dark)'"
-            onmouseout="this.style.backgroundColor='var(--accent-blue)'"
+            type="button"
+            class="text-sm text-white px-3 py-1 rounded transition-colors btn-expand-all"
+            aria-label="Expand all sections"
           >
             Expand All
           </button>
           <button
             id="collapse-all"
-            class="text-sm text-white px-3 py-1 rounded transition-colors"
-            style="background-color: #6b7280;"
-            onmouseover="this.style.backgroundColor='#4b5563'"
-            onmouseout="this.style.backgroundColor='#6b7280'"
+            type="button"
+            class="text-sm text-white px-3 py-1 rounded transition-colors btn-collapse-all"
+            aria-label="Collapse all sections"
           >
             Collapse All
           </button>
           <button
             id="theme-toggle"
+            type="button"
             class="text-sm px-3 py-1 rounded border"
             style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color);"
-            title="Toggle dark mode"
+            aria-label="Toggle dark/light mode"
+            aria-pressed="false"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
               <path class="moon-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" style="display: none;" />
             </svg>
@@ -288,39 +399,39 @@
             A practical guide to building interfaces that don't suck.
           </p>
           <div class="mt-4">
-            <a href="good-code.html" class="underline transition-colors" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">
-              Also check out: What Makes Good Code? →
+            <a href="good-code.html" class="underline transition-colors hover:brightness-125" style="color: var(--text-link);">
+              Also check out: What Makes Good Code? <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
       </header>
 
       <!-- Mini Table of Contents -->
-      <nav class="mb-8 p-6 rounded-lg" style="background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);">
+      <nav class="mb-8 p-6 rounded-lg" style="background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);" aria-label="Quick navigation">
         <h2 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Quick Navigation</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <a href="#what-makes-good" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#what-makes-good" class="nav-link">
             1. Introduction & Examples
           </a>
-          <a href="#score-framework" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#score-framework" class="nav-link">
             2. The SCORE Framework
           </a>
-          <a href="#anti-patterns" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#anti-patterns" class="nav-link">
             3. Common Anti-Patterns
           </a>
-          <a href="#maintaining-quality" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#maintaining-quality" class="nav-link">
             4. Maintaining Quality Over Time
           </a>
-          <a href="#ai-interfaces" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#ai-interfaces" class="nav-link">
             5. AI and Intelligent Interfaces
           </a>
-          <a href="#further-reading" class="p-3 rounded transition-colors hover:shadow-md" style="background-color: var(--bg-primary); color: var(--text-link); border: 1px solid var(--border-color);" onmouseover="this.style.backgroundColor='var(--accent-blue-light)'" onmouseout="this.style.backgroundColor='var(--bg-primary)'">
+          <a href="#further-reading" class="nav-link">
             6. Further Reading
           </a>
         </div>
       </nav>
 
-      <main class="space-y-6">
+      <main class="space-y-6" id="main-content">
         <!-- What Makes a Good Programming Interface? -->
         <section
           id="what-makes-good"
@@ -331,6 +442,10 @@
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-what-makes-good"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-what-makes-good"
           >
             <svg
               class="toggle-icon"
@@ -338,6 +453,7 @@
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -365,11 +481,11 @@
                 >
                   <thead>
                     <tr style="background-color: var(--accent-blue-dark); color: white;">
-                      <th class="p-4 text-left font-semibold">Aspect</th>
-                      <th class="p-4 text-left font-semibold">
+                      <th class="p-4 text-left font-semibold" scope="col">Aspect</th>
+                      <th class="p-4 text-left font-semibold" scope="col">
                         ❌ Bad Interface
                       </th>
-                      <th class="p-4 text-left font-semibold">
+                      <th class="p-4 text-left font-semibold" scope="col">
                         ✅ Good Interface
                       </th>
                     </tr>
@@ -870,6 +986,10 @@ const client = new HttpClient("https://api.example.com")
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-score-framework"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-score-framework"
           >
             <svg
               class="toggle-icon"
@@ -877,6 +997,7 @@ const client = new HttpClient("https://api.example.com")
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -917,6 +1038,10 @@ const client = new HttpClient("https://api.example.com")
               <div
                 class="collapsible-header sub-header"
                 data-target="sub-content-core-principles"
+                role="button"
+                tabindex="0"
+                aria-expanded="false"
+                aria-controls="sub-content-core-principles"
               >
                 <svg
                   class="toggle-icon sub-icon"
@@ -924,6 +1049,7 @@ const client = new HttpClient("https://api.example.com")
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path d="M9 6l6 6-6 6" />
                 </svg>
@@ -974,6 +1100,10 @@ const client = new HttpClient("https://api.example.com")
               <div
                 class="collapsible-header sub-header"
                 data-target="sub-content-advanced-qualities"
+                role="button"
+                tabindex="0"
+                aria-expanded="false"
+                aria-controls="sub-content-advanced-qualities"
               >
                 <svg
                   class="toggle-icon sub-icon"
@@ -981,6 +1111,7 @@ const client = new HttpClient("https://api.example.com")
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path d="M9 6l6 6-6 6" />
                 </svg>
@@ -1083,6 +1214,10 @@ const client = new HttpClient("https://api.example.com")
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-anti-patterns"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-anti-patterns"
           >
             <svg
               class="toggle-icon"
@@ -1090,6 +1225,7 @@ const client = new HttpClient("https://api.example.com")
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -1410,6 +1546,10 @@ interface DataStore {
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-maintaining-quality"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-maintaining-quality"
           >
             <svg
               class="toggle-icon"
@@ -1417,6 +1557,7 @@ interface DataStore {
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -1525,6 +1666,10 @@ interface DataStore {
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-ai-interfaces"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-ai-interfaces"
           >
             <svg
               class="toggle-icon"
@@ -1532,6 +1677,7 @@ interface DataStore {
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -1629,6 +1775,10 @@ interface DataStore {
             class="collapsible-header text-3xl font-bold"
             style="color: var(--accent-blue);"
             data-target="content-further-reading"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="content-further-reading"
           >
             <svg
               class="toggle-icon"
@@ -1636,6 +1786,7 @@ interface DataStore {
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              aria-hidden="true"
             >
               <path d="M9 6l6 6-6 6" />
             </svg>
@@ -1651,6 +1802,7 @@ interface DataStore {
                   href="https://www.martinfowler.com/ieeeSoftware/designGuideline.pdf"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="Design Guidelines (opens in new tab)"
                   >Design Guidelines</a
                 >
                 <p class="text-base" style="color: var(--text-secondary);">
@@ -1664,6 +1816,7 @@ interface DataStore {
                   href="https://www.developerdotstar.com/mag/articles/read_princprog.html"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="Principled Programming (opens in new tab)"
                   >Principled Programming</a
                 >
                 <p class="text-base" style="color: var(--text-secondary);">
@@ -1677,6 +1830,7 @@ interface DataStore {
                   href="https://www.codementor.io/@dheeraj_jha/what-are-the-qualities-of-a-good-application-programming-interface-function-22j2prnyoe"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="Qualities of a Good Application Programming Interface (API) (opens in new tab)"
                   >Qualities of a Good Application Programming Interface
                   (API)</a
                 >
@@ -1691,6 +1845,7 @@ interface DataStore {
                   href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/32713.pdf"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="How to Design a Good API and Why it Matters (opens in new tab)"
                   >How to Design a Good API and Why it Matters</a
                 >
                 <p class="text-base" style="color: var(--text-secondary);">
@@ -1702,6 +1857,7 @@ interface DataStore {
                   href="https://www.developerdotstar.com/mag/articles/pugh_interface_oriented.html"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="Interface Oriented Design (opens in new tab)"
                   >Interface Oriented Design</a
                 >
                 <p class="text-base" style="color: var(--text-secondary);">
@@ -1714,6 +1870,7 @@ interface DataStore {
                   href="https://uxdesign.cc/ai-ux-design-for-intelligent-interfaces-bc966e96107d"
                   target="_blank"
                   class="text-blue-700 hover:underline font-semibold"
+                  aria-label="AI UX: Design for Intelligent Interfaces (opens in new tab)"
                   >AI UX: Design for Intelligent Interfaces</a
                 >
                 <p class="text-base" style="color: var(--text-secondary);">
@@ -1750,18 +1907,35 @@ interface DataStore {
           if (content && toggleIcon) {
             content.classList.add("collapsed");
             header.classList.remove("expanded-header");
+            header.setAttribute("aria-expanded", "false");
           }
 
-          header.addEventListener("click", () => {
+          // Function to toggle section
+          const toggleSection = () => {
             if (content && toggleIcon) {
               content.classList.toggle("collapsed");
-              if (content.classList.contains("collapsed")) {
-                toggleIcon.classList.remove("rotated");
-                header.classList.remove("expanded-header");
-              } else {
+              const isExpanded = !content.classList.contains("collapsed");
+              
+              if (isExpanded) {
                 toggleIcon.classList.add("rotated");
                 header.classList.add("expanded-header");
+                header.setAttribute("aria-expanded", "true");
+              } else {
+                toggleIcon.classList.remove("rotated");
+                header.classList.remove("expanded-header");
+                header.setAttribute("aria-expanded", "false");
               }
+            }
+          };
+
+          // Click event
+          header.addEventListener("click", toggleSection);
+
+          // Keyboard navigation
+          header.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggleSection();
             }
           });
         });
@@ -1777,7 +1951,10 @@ interface DataStore {
 
           contents.forEach((content) => content.classList.remove("collapsed"));
           icons.forEach((icon) => icon.classList.add("rotated"));
-          headers.forEach((header) => header.classList.add("expanded-header"));
+          headers.forEach((header) => {
+            header.classList.add("expanded-header");
+            header.setAttribute("aria-expanded", "true");
+          });
         });
 
         // Collapse All functionality
@@ -1790,9 +1967,10 @@ interface DataStore {
 
             contents.forEach((content) => content.classList.add("collapsed"));
             icons.forEach((icon) => icon.classList.remove("rotated"));
-            headers.forEach((header) =>
-              header.classList.remove("expanded-header"),
-            );
+            headers.forEach((header) => {
+              header.classList.remove("expanded-header");
+              header.setAttribute("aria-expanded", "false");
+            });
           });
 
         // Smooth scrolling for navigation links
@@ -1828,13 +2006,16 @@ interface DataStore {
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
+        const themeToggle = document.getElementById('theme-toggle');
         
         if (isLight) {
           sunIcon.style.display = 'block';
           moonIcon.style.display = 'none';
+          themeToggle.setAttribute('aria-pressed', 'true');
         } else {
           sunIcon.style.display = 'none';
           moonIcon.style.display = 'block';
+          themeToggle.setAttribute('aria-pressed', 'false');
         }
       }
 
@@ -1891,11 +2072,12 @@ interface DataStore {
     <!-- Floating Back to Top Button -->
     <button 
       id="back-to-top" 
-      class="fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all hover:shadow-xl"
-      style="display: none; background-color: var(--accent-blue); color: white;"
-      title="Back to top"
+      type="button"
+      class="fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-offset-2"
+      style="display: none; background-color: var(--accent-blue); color: white; focus-ring-color: var(--accent-blue);"
+      aria-label="Back to top"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
       </svg>
     </button>
