@@ -61,7 +61,7 @@
         --bg-secondary: #1f2937;
         --text-primary: #f9fafb;
         --text-secondary: #e5e7eb;
-        --text-tertiary: #9ca3af;
+        --text-tertiary: #d1d5db; /* Improved contrast from #9ca3af */
         --text-link: #60a5fa;
         --text-link-hover: #93bbfc;
         --border-color: #374151;
@@ -124,38 +124,135 @@
       code[class*="language-"] {
         font-size: 0.875rem;
       }
+      
+      /* Accessibility improvements */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--accent-blue);
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        border-radius: 0 0 4px 0;
+      }
+      
+      .skip-link:focus {
+        top: 0;
+      }
+      
+      /* Focus styles for better visibility */
+      *:focus {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
+      }
+      
+      button:focus,
+      a:focus {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
+      }
+      
+      /* Button hover/focus states */
+      .btn-theme {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+      }
+      
+      .btn-theme:hover,
+      .btn-theme:focus {
+        background-color: var(--accent-blue-light);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px var(--shadow-color);
+      }
+      
+      /* Navigation link states */
+      .nav-link {
+        color: var(--text-link);
+        text-decoration: underline;
+        transition: color 0.2s;
+      }
+      
+      .nav-link:hover,
+      .nav-link:focus {
+        color: var(--text-link-hover);
+      }
+      
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      
+      /* High contrast mode support */
+      @media (prefers-contrast: high) {
+        :root {
+          --accent-blue: #0066cc;
+          --accent-blue-dark: #0052a3;
+          --text-link: #0066cc;
+        }
+      }
+      
+      /* Ensure touch targets are at least 44x44 pixels */
+      button,
+      a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Screen reader only content */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
     </style>
   </head>
   <body class="antialiased leading-relaxed">
+    <!-- Skip to main content link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="container mx-auto p-4 md:p-8">
-      <header class="text-center mb-12">
+      <header class="text-center mb-12" role="banner">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4 rounded-lg p-4" style="color: var(--accent-blue-dark); background-color: var(--bg-secondary); box-shadow: 0 0 10px var(--shadow-color);">
           What Makes Good Code?
         </h1>
         <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">
           Beyond working correctly, good code is a joy to read, modify, and build upon.
         </p>
-        <div class="mt-4 flex items-center justify-center gap-4">
-          <a href="index.html" class="underline transition-colors" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">← Back to Interface Design</a>
+        <nav class="mt-4 flex items-center justify-center gap-4" aria-label="Navigation">
+          <a href="index.html" class="nav-link">← Back to Interface Design</a>
           <button
             id="theme-toggle"
-            class="px-3 py-1 rounded border transition-colors"
-            style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color);"
-            title="Toggle dark mode"
+            type="button"
+            class="px-3 py-1 rounded border transition-colors btn-theme"
+            aria-label="Toggle dark/light mode"
+            aria-pressed="false"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
               <path class="moon-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" style="display: none;" />
             </svg>
           </button>
-        </div>
+        </nav>
       </header>
 
-      <main class="space-y-6">
+      <main class="space-y-6" id="main-content">
         <!-- The Essence of Good Code -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-essence">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-essence" role="button" tabindex="0" aria-expanded="false" aria-controls="content-essence">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>The Essence of Good Code</h2>
@@ -179,8 +276,8 @@
 
         <!-- Core Principles -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-principles">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-principles" role="button" tabindex="0" aria-expanded="false" aria-controls="content-principles">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>Core Principles of Good Code</h2>
@@ -315,8 +412,8 @@ function calculateDiscount(price, discountPercent) {
 
         <!-- Practical Examples -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-examples">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-examples" role="button" tabindex="0" aria-expanded="false" aria-controls="content-examples">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>Real-World Examples</h2>
@@ -444,8 +541,8 @@ for (User user : recentlyInactiveUsers) {
 
         <!-- Code Smells -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-smells">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-smells" role="button" tabindex="0" aria-expanded="false" aria-controls="content-smells">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>Code Smells to Avoid</h2>
@@ -456,42 +553,42 @@ for (User user : recentlyInactiveUsers) {
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Long Methods</h3>
                 <p class="mb-3">If you need to scroll to see the whole function, it's doing too much.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Extract smaller functions with clear names</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Extract smaller functions with clear names</p>
               </div>
 
               <!-- Deep Nesting -->
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Deep Nesting</h3>
                 <p class="mb-3">Multiple levels of indentation make code hard to follow.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Early returns, extract functions, simplify logic</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Early returns, extract functions, simplify logic</p>
               </div>
 
               <!-- Magic Numbers -->
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Magic Numbers</h3>
                 <p class="mb-3">Unexplained numbers scattered throughout code.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Named constants with clear meaning</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Named constants with clear meaning</p>
               </div>
 
               <!-- Copy-Paste Code -->
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Duplicated Code</h3>
                 <p class="mb-3">Same logic repeated in multiple places.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Extract shared functionality</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Extract shared functionality</p>
               </div>
 
               <!-- Dead Code -->
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Dead Code</h3>
                 <p class="mb-3">Commented out code, unused variables, unreachable branches.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Delete it (version control remembers)</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Delete it (version control remembers)</p>
               </div>
 
               <!-- Premature Optimization -->
               <div class="p-6 rounded-lg border-2" style="background-color: var(--accent-red-light); border-color: var(--accent-red);">
                 <h3 class="text-xl font-semibold mb-3" style="color: var(--accent-red);">🚨 Premature Optimization</h3>
                 <p class="mb-3">Complex code for hypothetical performance gains.</p>
-                <p class="text-sm style="color: var(--text-secondary);""><b>Fix:</b> Write clear code first, optimize with data</p>
+                <p class="text-sm" style="color: var(--text-secondary);"><b>Fix:</b> Write clear code first, optimize with data</p>
               </div>
             </div>
           </div>
@@ -499,8 +596,8 @@ for (User user : recentlyInactiveUsers) {
 
         <!-- The Test of Time -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-test-time">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-test-time" role="button" tabindex="0" aria-expanded="false" aria-controls="content-test-time">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>The Test of Time</h2>
@@ -549,8 +646,8 @@ for (User user : recentlyInactiveUsers) {
 
         <!-- Quick Reference -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-quick-ref">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-quick-ref" role="button" tabindex="0" aria-expanded="false" aria-controls="content-quick-ref">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>Quick Reference Card</h2>
@@ -600,8 +697,8 @@ for (User user : recentlyInactiveUsers) {
 
         <!-- Final Thoughts -->
         <section class="p-6 md:p-10 rounded-xl" style="background-color: var(--bg-secondary); box-shadow: 0 0 15px var(--shadow-color);">
-          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-final">
-            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="collapsible-header text-3xl font-bold" style="color: var(--accent-blue);" data-target="content-final" role="button" tabindex="0" aria-expanded="false" aria-controls="content-final">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M9 6l6 6-6 6" />
             </svg>
             <h2>Final Thoughts</h2>
@@ -641,10 +738,10 @@ for (User user : recentlyInactiveUsers) {
         </section>
       </main>
 
-      <footer class="text-center mt-12 pt-8 border-t text-sm" style="border-color: var(--border-color); color: var(--text-tertiary);">
+      <footer class="text-center mt-12 pt-8 border-t text-sm" style="border-color: var(--border-color); color: var(--text-tertiary);" role="contentinfo">
         <p>&copy; 2025 Good Code Principles - For Developers Who Care</p>
         <p class="mt-2">
-          <a href="index.html" class="underline" style="color: var(--text-link);" onmouseover="this.style.color='var(--text-link-hover)'" onmouseout="this.style.color='var(--text-link)'">Back to Interface Design Guide</a>
+          <a href="index.html" class="nav-link">Back to Interface Design Guide</a>
         </p>
       </footer>
     </div>
@@ -664,16 +761,31 @@ for (User user : recentlyInactiveUsers) {
             header.classList.remove("expanded-header");
           }
 
-          header.addEventListener("click", () => {
+          function toggleSection() {
             if (content && toggleIcon) {
               content.classList.toggle("collapsed");
-              if (content.classList.contains("collapsed")) {
-                toggleIcon.classList.remove("rotated");
-                header.classList.remove("expanded-header");
-              } else {
+              const isExpanded = !content.classList.contains("collapsed");
+              
+              if (isExpanded) {
                 toggleIcon.classList.add("rotated");
                 header.classList.add("expanded-header");
+                header.setAttribute("aria-expanded", "true");
+              } else {
+                toggleIcon.classList.remove("rotated");
+                header.classList.remove("expanded-header");
+                header.setAttribute("aria-expanded", "false");
               }
+            }
+          }
+
+          // Mouse click support
+          header.addEventListener("click", toggleSection);
+
+          // Keyboard support (Enter and Space)
+          header.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggleSection();
             }
           });
         });
@@ -701,13 +813,16 @@ for (User user : recentlyInactiveUsers) {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
+        const themeToggle = document.getElementById('theme-toggle');
         
         if (isDark) {
           sunIcon.style.display = 'none';
           moonIcon.style.display = 'block';
+          themeToggle.setAttribute('aria-pressed', 'true');
         } else {
           sunIcon.style.display = 'block';
           moonIcon.style.display = 'none';
+          themeToggle.setAttribute('aria-pressed', 'false');
         }
       }
 
@@ -715,13 +830,17 @@ for (User user : recentlyInactiveUsers) {
       initializeTheme();
 
       // Theme toggle button
-      document.getElementById('theme-toggle').addEventListener('click', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateThemeIcon();
+        
+        // Update aria-pressed
+        themeToggle.setAttribute('aria-pressed', newTheme === 'dark' ? 'true' : 'false');
       });
 
       // Listen for system theme changes
