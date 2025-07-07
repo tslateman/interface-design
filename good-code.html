@@ -232,7 +232,7 @@
           Beyond working correctly, good code is a joy to read, modify, and build upon.
         </p>
         <nav class="mt-4 flex items-center justify-center gap-4" aria-label="Navigation">
-          <a href="../../index.html" class="nav-link">← Back to Home</a>
+          <a href="../../index.html" class="nav-link" id="back-to-home-link" style="display: none;">← Back to Home</a>
           <a href="index.html" class="nav-link">← Back to Interface Design</a>
           <button
             id="theme-toggle"
@@ -852,6 +852,17 @@ for (User user : recentlyInactiveUsers) {
           updateThemeIcon();
         }
       });
+      
+      // Show "Back to Home" link only when within Code & Context
+      (function() {
+        const currentUrl = window.location.href;
+        const backLink = document.getElementById('back-to-home-link');
+        
+        // Check if we're in the /share/content/ path structure
+        if (currentUrl.includes('/share/content/') || currentUrl.includes('/share/content%2F')) {
+          backLink.style.display = 'inline-flex';
+        }
+      })();
     </script>
   </body>
 </html>

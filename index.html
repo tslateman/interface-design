@@ -355,7 +355,7 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="max-w-7xl mx-auto p-4 md:p-8">
       <!-- Navigation -->
-      <nav class="mb-6">
+      <nav class="mb-6" id="back-to-home-nav" style="display: none;">
         <a href="../../index.html" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -363,6 +363,18 @@
           Back to Home
         </a>
       </nav>
+      <script>
+        // Show "Back to Home" button only when within Code & Context
+        (function() {
+          const currentUrl = window.location.href;
+          const nav = document.getElementById('back-to-home-nav');
+          
+          // Check if we're in the /share/content/ path structure
+          if (currentUrl.includes('/share/content/') || currentUrl.includes('/share/content%2F')) {
+            nav.style.display = 'block';
+          }
+        })();
+      </script>
 
       <header class="mb-12">
         <!-- Control buttons -->
